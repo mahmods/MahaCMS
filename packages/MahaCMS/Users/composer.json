@@ -1,0 +1,11 @@
+{
+    "name": "mahacms/users",
+    "description": "MahaCMS package for users management.",
+    "authors": [
+        {
+            "name": "Mahmoud Slah",
+            "email": "mahmoudslah25@gmail.com"
+        }
+    ],
+    "require": {}
+}

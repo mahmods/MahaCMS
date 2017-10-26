@@ -1,0 +1,9 @@
+
+{
+    "items": [
+        {
+            "trans": "laralum_dashboard::general.dashboard",
+            "route": "laralum::dashboard"
+        }
+    ]
+}

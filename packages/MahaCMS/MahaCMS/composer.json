@@ -1,0 +1,20 @@
+{
+    "name": "mahacms/mahacms",
+    "description": "MahaCMS",
+    "authors": [
+        {
+            "name": "Mahmoud Slah",
+            "email": "mahmoudslah25@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MahaCMS\\MahaCMS\\": "./src",
+            "MahaCMS\\Blog\\": "../Blog/src/",
+            "MahaCMS\\Users\\": "../Users/src/",
+            "MahaCMS\\Permissions\\": "../Permissions/src/",
+            "MahaCMS\\Roles\\": "../Roles/src/"
+        }
+    }
+}

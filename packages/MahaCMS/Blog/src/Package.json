@@ -1,0 +1,4 @@
+[
+        	{"name": "create_post", "url": "api/posts/create" },
+        	{"name": "view_posts", "url": "api/posts" }
+]
