@@ -4,74 +4,101 @@ namespace MahaCMS\Blog\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use MahaCMS\Blog\Models\Post;
+use Auth;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
-    	//$this->middleware('auth:api')->except('index');
-    }
     public function index()
     {
-        $posts = Post::all();
-
-        return response()->json([
-            'posts' => $posts
-        ]);
+        $user = Auth::guard('api')->user();
+        if ($user->can('access', Post::class)) {
+            return response()->json([
+                'items' => Post::select('id', 'title', 'description', 'created_at')->get(),
+                'columns' => [['id', '#'], ['title', 'Title'], ['description', 'Description'], ['created_at', 'Date']]
+                ]);
+        } else {
+            return response()->json([
+                'authorized' => false
+            ]);
+        }
     }
 
     public function create()
     {
-        return response()->json([
-            'form' => [
-                'title' => '',
-                'description' => '',
-                'content' => '',
-            ]
-        ]);
+        $user = Auth::guard('api')->user();
+        if ($user->can('create', Post::class)) {
+            return response()->json(['form' => [
+                ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'value' => ''],
+                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => ''],
+                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => ''],
+                ['name' => 'user_id', 'value' => $user->id]
+            ]]);
+        } else {
+            return response()->json([
+                'authorized' => false
+            ]);
+        }
+
     }
     
     public function store(Request $request)
     {
-        $post = new Post($request->all());
-        $post->save();
-
-        return response()->json([
-            'created' => true
-        ]);
+        $user = Auth::guard('api')->user();
+        if ($user->can('create', Post::class)) {
+            $permission = new Post($request->all());
+            $permission->save();
+    
+            return response()->json(['success' => true ]);
+        } else {
+            return response()->json([
+                'authorized' => false
+            ]);
+        }
     }
 
     public function edit($id)
     {
         $post = Post::find($id);
-        return response()->json([
-            'form' => [
-                'id' => $post->id,
-                'title' => $post->title,
-                'description' => $post->description,
-                'content' => $post->content,
-                'user_id' => $post->user->id
-            ]
-        ]);
+        $user = Auth::guard('api')->user();
+        if ($user->can('update', $post)) {
+            return response()->json(['form' => [
+                ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'value' => $post->id],
+                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => $post->title],
+                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => $post->content],
+                ['name' => 'user_id', 'value' => $post->user->id]
+            ]]);
+        } else {
+            return response()->json([
+                'authorized' => false
+            ]);
+        }
     }
-
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
-        $post->title = $request->title;
-        $post->description = $request->description;
-        $post->content = $request->content;
-        $post->save();
-
-        return response()->json([
-            'edited' => true
-        ]);
+        $user = Auth::guard('api')->user();
+        if ($user->can('update', $post)) {
+            $post->update($request->all());
+            return response()->json(['success' => true ]);
+        } else {
+            return response()->json([
+                'authorized' => false
+            ]);
+        }
     }
 
     public function destroy($id)
     {
         $post = Post::find($id);
-        $post->delete();
+        $user = Auth::guard('api')->user();
+        if ($user->can('update', $post)) {
+            $post->delete();
+            return response()->json(['success' => true ]);
+        } else {
+            return response()->json([
+                'authorized' => false
+            ]);
+        }
         return response()
             ->json([
                 'deleted' => true

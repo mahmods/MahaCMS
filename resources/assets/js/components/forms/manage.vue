@@ -11,8 +11,8 @@
                 <tr v-for="item in this.data.items" :key="item.id">
                     <td v-for="k in item" :key="k">{{k}}</td>
 					<td>
-						<router-link :to="'/dashboard/'+ $route.params.p + '/' +item.id+'/update'">Edit</router-link>
-						<router-link to='/item.id/update'>Delete</router-link>
+						<router-link class="btn btn-primary" :to="'/dashboard/'+ $route.params.p + '/' +item.id+'/update'">Edit</router-link>
+						<button class="btn btn-danger" v-on:click="remove(item.id)">Delete</button>
 					</td>
                 </tr>
             </tbody>
@@ -52,7 +52,27 @@ export default {
 				console.log(response.data)
 				this.data = response.data
 			})
+		},
+		remove(id) {
+			axios({
+				method: 'DELETE',
+				url: '/api/' + this.$route.params.p + '/' + id,
+				headers: {
+					'Authorization': 'Bearer ' + this.auth.api_token
+				}
+			})
+			.then(response => {
+				if(response.data.success) {
+					this.getData();
+				}
+			})
 		}
     },
 }
 </script>
+
+<style>
+	button {
+		cursor: pointer;
+	}
+</style>

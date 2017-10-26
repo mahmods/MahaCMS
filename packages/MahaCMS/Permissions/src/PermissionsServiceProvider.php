@@ -2,8 +2,8 @@
 
 namespace MahaCMS\Permissions;
 
-use Illuminate\Support\ServiceProvider;
-//use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+//use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use MahaCMS\Permissions\Models\Permission;
 use MahaCMS\Permissions\Policies\PermissionPolicy;
 use Illuminate\Support\Facades\Gate;

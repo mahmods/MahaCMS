@@ -7,7 +7,7 @@ use MahaCMS\Users\Models\User;
 
 class PermissionPolicy
 {
-    //use HandlesAuthorization;
+    use HandlesAuthorization;
 
     public function access($user)
     {

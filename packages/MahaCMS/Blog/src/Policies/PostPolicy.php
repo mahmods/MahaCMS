@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace MahaCMS\Blog\Policies;
 
 use MahaCMS\Users\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -9,19 +9,24 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function access($user)
     {
-        //
+        return User::findOrFail($user->id)->hasAccess('posts');
     }
 
     public function create($user)
     {
-        return User::findOrFail($user->id)->hasPermission('laralum::blog.posts.create');
+        return User::findOrFail($user->id)->hasPermission('posts.create');
+    }
+
+    public function update($user)
+    {
+        return User::findOrFail($user->id)->hasPermission('posts.manage');
+    }
+
+    public function delete($user)
+    {
+        return User::findOrFail($user->id)->hasPermission('posts.manage');
     }
 
 }
