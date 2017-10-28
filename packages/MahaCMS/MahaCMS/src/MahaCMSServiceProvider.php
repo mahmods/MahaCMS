@@ -21,6 +21,8 @@ class MahaCMSServiceProvider extends ServiceProvider
         $this->app->register('MahaCMS\Roles\RolesServiceProvider');
         $this->app->register('MahaCMS\Permissions\PermissionsServiceProvider');
         $this->app->register('MahaCMS\Blog\BlogServiceProvider');
+        $this->app->register('MahaCMS\Settings\SettingsServiceProvider');
+        $this->app->register('MahaCMS\Profile\ProfileServiceProvider');
     }
 
     /**

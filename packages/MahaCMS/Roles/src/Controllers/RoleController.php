@@ -18,11 +18,8 @@ class RoleController extends Controller
                 'items' => Role::select('id', 'name', 'description')->get(),
                 'columns' => [['id', '#'], ['name', 'Name'], ['description', 'Description']]
                 ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function create()
@@ -35,11 +32,8 @@ class RoleController extends Controller
                 ['name' => 'permissions', 'label' => 'Permissions', 'type' => 'selectCheckBox', 'value' => []]
             ],
             'permissions' => Permission::all()]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function store(Request $request)
@@ -49,11 +43,8 @@ class RoleController extends Controller
             $role = new Role($request->all());
             $role->save();
             return response()->json(['success' => true, 'id' => $role->id ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function edit($id)
@@ -65,11 +56,8 @@ class RoleController extends Controller
                 ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => $role->name],
                 ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => $role->description]
             ]]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function update(Request $request, $id)
@@ -79,11 +67,8 @@ class RoleController extends Controller
         if ($user->can('update', $role)) {
             $role->update($request->all());
             return response()->json(['success' => true ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function managePermissions($id)
@@ -98,9 +83,8 @@ class RoleController extends Controller
                 array_push($permissions, [$allPermissions[$i]->id, $allPermissions[$i]->name,  $c]);
             }
             return response()->json(['permissions' => $permissions]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
         
     }
 
@@ -118,9 +102,8 @@ class RoleController extends Controller
                 }
             }
             return response()->json(['success' => true]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function destroy(Request $request, $id)
@@ -132,10 +115,7 @@ class RoleController extends Controller
             $role->deleteUsers($role->users);
             $role->delete();
             return response()->json(['success' => true ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 }

@@ -7,15 +7,9 @@ use MahaCMS\MahaCMS\Menu;
 
 class PackagesController extends Controller
 {
-    public function __construct()
-    {
-    	//$this->middleware('auth:api')->except('index');
-    }
     public function all()
     {
         $Menu = Menu::generate();
-        return response()->json([
-            'menu' => $Menu
-        ]);
+        return response()->json(['menu' => $Menu]);
     }
 }

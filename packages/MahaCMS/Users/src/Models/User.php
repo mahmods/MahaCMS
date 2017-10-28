@@ -5,6 +5,7 @@ namespace MahaCMS\Users\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use MahaCMS\Blog\Models\Post;
+use MahaCMS\Profile\Models\Profile;
 use MahaCMS\Roles\Traits\HasRolesAndPermissions;
 
 class User extends Authenticatable
@@ -32,6 +33,11 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
     }
 
     public function superAdmin()

@@ -8,6 +8,8 @@ import ManageForm from './components/forms/manage'
 import Login from './components/auth/login'
 import Register from './components/auth/register'
 import Dashboard from './components/dashboard'
+import Settings from './components/dashboard/settings'
+import Profile from './components/dashboard/profile'
 import UsersList from './components/dashboard/users'
 import UsersRoles from './components/dashboard/usersRoles'
 import RolesList from './components/dashboard/roles'
@@ -20,6 +22,8 @@ const router = new VueRouter({
         {
         	path: '/dashboard', component: Dashboard,
         	children: [
+                { path: 'settings', component: Settings },
+                { path: 'profile', component: Profile },
                 { path: 'users', component: UsersList },
                 { path: 'users/:id/roles', component: UsersRoles },
                 { path: 'roles', component: RolesList },

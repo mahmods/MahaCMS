@@ -4,7 +4,7 @@
 			<img class="dashboard__sideBar--image" src="/img/logo2.png">
 			<div class="dashboard__sideBar--list">
 				<div v-for="m in menu" :key="m.name" class="dashboard__sideBar--list-item">
-					<router-link v-if="menuHasSingleItem(m)" :to="'/dashboard'" class="dashboard__sideBar--list-item-title">{{m.items[0].text}}</router-link>
+					<router-link v-if="menuHasSingleItem(m)" :to="'/dashboard'+m.items[0].url"  class="dashboard__sideBar--list-item-title">{{m.items[0].text}}</router-link>
 
 
 					<h1 v-if="!menuHasSingleItem(m)" class="dashboard__sideBar--list-item-title">{{m.name}}</h1>

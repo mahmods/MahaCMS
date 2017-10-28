@@ -28,7 +28,9 @@
             "MahaCMS\\Blog\\": "packages/MahaCMS/Blog/src/",
             "MahaCMS\\Users\\": "packages/MahaCMS/Users/src/",
             "MahaCMS\\Permissions\\": "packages/MahaCMS/Permissions/src/",
-            "MahaCMS\\Roles\\": "packages/MahaCMS/Roles/src/"
+            "MahaCMS\\Roles\\": "packages/MahaCMS/Roles/src/",
+            "MahaCMS\\Settings\\": "packages/MahaCMS/Settings/src/",
+            "MahaCMS\\Profile\\": "packages/MahaCMS/Profile/src/"
         }
     },
     "autoload-dev": {

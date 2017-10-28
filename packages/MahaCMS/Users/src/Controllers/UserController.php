@@ -19,9 +19,8 @@ class UserController extends Controller
                 'items' => User::select('id', 'name', 'email')->get(),
                 'columns' => [['id', '#'], ['name', 'Name'], ['email', 'Email']]
                 ]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function create()
@@ -33,9 +32,8 @@ class UserController extends Controller
                 ['name' => 'email', 'label' => 'Email', 'type' => 'text', 'value' => ''],
                 ['name' => 'password', 'label' => 'Password', 'type' => 'text', 'value' => '']
                 ]]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function store(Request $request)
@@ -47,9 +45,8 @@ class UserController extends Controller
             $newUser->save();
     
             return response()->json(['success' => true ]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function edit($id)
@@ -62,9 +59,8 @@ class UserController extends Controller
                 ['name' => 'email', 'label' => 'Email', 'type' => 'text', 'value' => $user->email],
                 ['name' => 'password', 'label' => 'Password', 'type' => 'text', 'value' => '']
                 ]]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function update(Request $request, $id)
@@ -74,9 +70,8 @@ class UserController extends Controller
         if ($userForAuth->can('update', $user)) {
             $user->update($request->all());
             return response()->json(['success' => true ]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function destroy(Request $request, $id)
@@ -86,9 +81,8 @@ class UserController extends Controller
         if ($userForAuth->can('delete', $user)) {
             $user->delete();
             return response()->json(['success' => true ]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function manageRoles($id)
@@ -103,9 +97,8 @@ class UserController extends Controller
                 array_push($roles, [$allRoles[$i]->id, $allRoles[$i]->name,  $c]);
             }
             return response()->json(['roles' => $roles]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
         
     }
 
@@ -123,8 +116,7 @@ class UserController extends Controller
                 }
             }
             return response()->json(['success' => true]);
-        } else {
-            return response()->json(['authorized' => false]);
         }
+        return response()->json(['authorized' => false]);
     }
 }

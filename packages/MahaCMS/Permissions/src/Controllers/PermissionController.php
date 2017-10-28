@@ -17,10 +17,7 @@ class PermissionController extends Controller
                 'items' => Permission::select('id', 'name', 'perm')->get(),
                 'columns' => [['id', '#'], ['name', 'Name'], ['perm', 'Short']]
                 ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 }

@@ -32,7 +32,6 @@ class Menu
             $pm = new self();
             $pm->name(ucfirst($package));
             $pma = Packages::menu($package);
-
             if (array_key_exists('items', $pma)) {
                 $pm->items = array_merge($pm->items, static::getPackageMenuItems($pma, $user));
             }
@@ -41,7 +40,6 @@ class Menu
                 $m->item($pm);
             }
         }
-
         $m->items = array_merge($m->items, static::getCustomMenuItems($user));
 
         return $m->items;

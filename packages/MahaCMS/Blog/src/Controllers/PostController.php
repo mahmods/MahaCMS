@@ -16,11 +16,8 @@ class PostController extends Controller
                 'items' => Post::select('id', 'title', 'description', 'created_at')->get(),
                 'columns' => [['id', '#'], ['title', 'Title'], ['description', 'Description'], ['created_at', 'Date']]
                 ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function create()
@@ -33,11 +30,8 @@ class PostController extends Controller
                 ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => '', 'editor' => true],
                 ['name' => 'user_id', 'value' => $user->id]
             ]]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
 
     }
     
@@ -48,12 +42,9 @@ class PostController extends Controller
             $permission = new Post($request->all());
             $permission->save();
     
-            return response()->json(['success' => true ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
+            return response()->json(['success' => true]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function edit($id)
@@ -67,11 +58,8 @@ class PostController extends Controller
                 ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => $post->content],
                 ['name' => 'user_id', 'value' => $post->user->id]
             ]]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
     public function update(Request $request, $id)
     {
@@ -80,11 +68,8 @@ class PostController extends Controller
         if ($user->can('update', $post)) {
             $post->update($request->all());
             return response()->json(['success' => true ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
+        return response()->json(['authorized' => false]);
     }
 
     public function destroy($id)
@@ -94,14 +79,7 @@ class PostController extends Controller
         if ($user->can('update', $post)) {
             $post->delete();
             return response()->json(['success' => true ]);
-        } else {
-            return response()->json([
-                'authorized' => false
-            ]);
         }
-        return response()
-            ->json([
-                'deleted' => true
-            ]);
+        return response()->json(['authorized' => false]);
     }
 }

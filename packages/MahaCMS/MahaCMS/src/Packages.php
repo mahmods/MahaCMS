@@ -62,9 +62,8 @@ class Packages extends Facade
      */
     public static function menu($package)
     {
-        $dir = __DIR__.'/../../'.$package.'/src';
+        $dir = __DIR__.'/../../'.ucfirst($package).'/src';
         $files = is_dir($dir) ? scandir($dir) : [];
-
         foreach ($files as $file) {
             if ($file == 'Menu.json') {
                 $file_r = file_get_contents($dir.'/'.$file);

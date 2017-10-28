@@ -1,11 +1,11 @@
 <?php
 return [
     'settings' => [
-        'base_url'  => '/administration',
+        'base_url'  => '/dashboard',
         'api_url'   => '/api',
     ],
 
     'superadmins' => [
-        'example@email.com',
-    ],
+        'mahmod@gmail.com'
+    ]
 ];

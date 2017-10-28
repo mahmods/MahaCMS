@@ -37,9 +37,7 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return response()->json([
-            'registered' => true
-        ]);
+        return response()->json(['registered' => true]);
     }
 
     public function logout(Request $request) 
@@ -74,9 +72,7 @@ class AuthController extends Controller
             array_push($Permissions[count($Permissions)-1]->items, $split[1]);
 
         }
-        return response()->json([
-            'permissions' => $Permissions
-        ]);
+        return response()->json(['permissions' => $Permissions]);
     }
 
     protected function checkPermissionExist($text, $array)

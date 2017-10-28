@@ -14,7 +14,8 @@
             "MahaCMS\\Blog\\": "../Blog/src/",
             "MahaCMS\\Users\\": "../Users/src/",
             "MahaCMS\\Permissions\\": "../Permissions/src/",
-            "MahaCMS\\Roles\\": "../Roles/src/"
+            "MahaCMS\\Roles\\": "../Roles/src/",
+            "MahaCMS\\Settings\\": "../Settings/src/"
         }
     }
 }
