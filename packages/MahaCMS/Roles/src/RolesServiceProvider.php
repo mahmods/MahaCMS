@@ -18,6 +18,10 @@ class RolesServiceProvider extends ServiceProvider
 
     protected $permissions = [
         [
+            'name' => 'Access Roles',
+            'perm' => 'roles.access',
+        ],
+        [
             'name' => 'Create Roles',
             'perm' => 'roles.create',
         ],

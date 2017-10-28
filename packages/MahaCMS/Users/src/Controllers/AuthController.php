@@ -4,6 +4,7 @@ namespace MahaCMS\Users\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use MahaCMS\Users\Models\User;
+use MahaCMS\Permissions\Models\Permission;
 use Hash;
 use Auth;
 
@@ -49,6 +50,9 @@ class AuthController extends Controller
     public function getPermissions()
     {
         $user = Auth::guard('api')->user();
+        if($user->superAdmin()) {
+            return response()->json(['permissions' => Permission::all()]);
+        }
         $allPermissions = [];
         for ($i=0; $i < count($user->roles); $i++) {
             for ($x=0; $x < count($user->roles[$i]->permissions); $x++) { 
@@ -62,7 +66,7 @@ class AuthController extends Controller
         for ($i=0; $i < count($allPermissions); $i++) { 
             $split = explode(".", $allPermissions[$i]);
             if(!$this->checkPermissionExist($split[0], $Permissions)) {
-                $p = new Permission();
+                $p = new Perm();
                 $p->name = $split[0];
                 $p->items = [];
                 array_push($Permissions, $p);
@@ -85,7 +89,7 @@ class AuthController extends Controller
         return false;
     }
 }
-class Permission {
+class Perm {
         public $name;
         public $items;
     }

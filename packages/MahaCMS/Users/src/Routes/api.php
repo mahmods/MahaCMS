@@ -4,6 +4,9 @@ Route::group([
     'middleware' => 'MahaCMS.auth'
 ], function () {
     Route::get('api/user/permissions', 'AuthController@getPermissions');
+    Route::get('api/users/{id}/roles', 'UserController@manageRoles');
+    Route::post('api/users/{id}/roles', 'UserController@updateRoles');
+    Route::resource('api/users', 'UserController');
 });
 
 Route::group([

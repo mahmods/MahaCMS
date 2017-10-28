@@ -31,8 +31,10 @@ class RoleController extends Controller
         if ($user->can('create', Role::class)) {
             return response()->json(['form' => [
                 ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => ''],
-                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => '']
-            ]]);
+                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => ''],
+                ['name' => 'permissions', 'label' => 'Permissions', 'type' => 'selectCheckBox', 'value' => []]
+            ],
+            'permissions' => Permission::all()]);
         } else {
             return response()->json([
                 'authorized' => false
@@ -46,8 +48,7 @@ class RoleController extends Controller
         if ($user->can('create', Role::class)) {
             $role = new Role($request->all());
             $role->save();
-    
-            return response()->json(['success' => true ]);
+            return response()->json(['success' => true, 'id' => $role->id ]);
         } else {
             return response()->json([
                 'authorized' => false
@@ -85,40 +86,40 @@ class RoleController extends Controller
         }
     }
 
-    public function permissions($id)
+    public function managePermissions($id)
     {
         $role = Role::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('manage_permissions', $role)) {
-            return response()->json([
-                'permissions' => $role->permissions,
-                'role' => $role->name
-                ]);
+        if ($user->can('update', $role)) {
+            $allPermissions = Permission::all();
+            $permissions = [];
+            for ($i=0; $i < count($allPermissions); $i++) { 
+                $c = $role->hasPermission($allPermissions[$i]) ? true : false;
+                array_push($permissions, [$allPermissions[$i]->id, $allPermissions[$i]->name,  $c]);
+            }
+            return response()->json(['permissions' => $permissions]);
         } else {
-            return response()->json([
-                'authorized' => false
-            ]);
+            return response()->json(['authorized' => false]);
         }
+        
     }
 
-    public function updatePermissions(Request $request, Role $role, $id)
+    public function updatePermissions(Request $request, $id)
     {
         $role = Role::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('manage_permissions', $role)) {
+        if ($user->can('update', $role)) {
             $permissions = Permission::all();
             foreach ($permissions as $permission) {
-                if (array_key_exists($permission->id, $request->all())) {
+                if (in_array($permission->id, $request->all())) {
                     $role->addPermission($permission);
                 } else {
                     $role->deletePermission($permission);
                 }
             }
-            return response()->json(['success' => true ]);
+            return response()->json(['success' => true]);
         } else {
-            return response()->json([
-                'authorized' => false
-            ]);
+            return response()->json(['authorized' => false]);
         }
     }
 

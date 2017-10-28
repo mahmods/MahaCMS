@@ -3,7 +3,7 @@ namespace MahaCMS\MahaCMS\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use MahaCMS\MahaCMS\Packages;
+use MahaCMS\MahaCMS\Menu;
 
 class PackagesController extends Controller
 {
@@ -13,10 +13,9 @@ class PackagesController extends Controller
     }
     public function all()
     {
-        $packages = Packages::all();
-
+        $Menu = Menu::generate();
         return response()->json([
-            'packages' => $packages
+            'menu' => $Menu
         ]);
     }
 }

@@ -8,6 +8,10 @@ import ManageForm from './components/forms/manage'
 import Login from './components/auth/login'
 import Register from './components/auth/register'
 import Dashboard from './components/dashboard'
+import UsersList from './components/dashboard/users'
+import UsersRoles from './components/dashboard/usersRoles'
+import RolesList from './components/dashboard/roles'
+import RolesPermissions from './components/dashboard/rolesPermissions'
 const router = new VueRouter({
     mode: 'history',
     routes: [
@@ -16,10 +20,14 @@ const router = new VueRouter({
         {
         	path: '/dashboard', component: Dashboard,
         	children: [
+                { path: 'users', component: UsersList },
+                { path: 'users/:id/roles', component: UsersRoles },
+                { path: 'roles', component: RolesList },
+                { path: 'roles/:id/permissions', component: RolesPermissions },
                 { path: ':p', component: AccessForm },
                 { path: ':p/create', component: CreateForm },
                 { path: ':p/:id/update', component: EditForm },
-                { path: ':p/manage', component: ManageForm }
+                { path: ':p/manage', component: ManageForm },
         	]
         }
     ]

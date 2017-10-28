@@ -1,0 +1,14 @@
+{
+    "items": [
+        {
+            "permission": "posts.access",
+            "text": "Posts list",
+            "link": "/posts"
+        },
+        {
+            "permission": "posts.create",
+            "text": "Create post",
+            "link": "/posts/create"
+        }
+    ]
+}

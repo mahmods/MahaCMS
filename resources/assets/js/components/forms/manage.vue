@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if="!loading">
         <table class="table">
             <thead>
                 <tr>
@@ -27,11 +27,13 @@ export default {
 	data() {
 		return {
 			data: [],
-			auth: Auth.state
+			auth: Auth.state,
+			loading: true
 		}
 	},
 	mounted() {
 		Auth.init()
+		Permissions.init()
 		this.getData()
 	},
 	watch: {
@@ -41,6 +43,7 @@ export default {
 	},
 	methods: {
 		getData() {
+			this.loading = true;
 			axios({
 				method: 'GET',
 				url: '/api/' + this.$route.params.p,
@@ -49,8 +52,8 @@ export default {
 				}
 			})
 			.then(response => {
-				console.log(response.data)
 				this.data = response.data
+				this.loading = false;
 			})
 		},
 		remove(id) {

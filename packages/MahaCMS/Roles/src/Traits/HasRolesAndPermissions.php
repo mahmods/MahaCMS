@@ -25,13 +25,15 @@ trait HasRolesAndPermissions
 
     public function hasAccess($permission)
     {
-        $permissions = Permission::all();
-        foreach ($permissions as $p) {
-            if(substr($p->perm, 0, strlen($permission)) === $permission) {
-                return true;
+        //$permissions = Permission::all();
+        foreach ($this->roles as $role) {
+            //dd($role->getPermissions());
+            foreach ($role->getPermissions() as $p) {
+                if(substr($p->perm, 0, strlen($permission)) === $permission) {
+                    return true;
+                }
             }
         }
-
         return false;
     }
 }

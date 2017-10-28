@@ -16,6 +16,10 @@ class BlogServiceProvider extends ServiceProvider
 
     protected $permissions = [
         [
+            'name' => 'Access Posts',
+            'perm' => 'posts.access',
+        ],
+        [
             'name' => 'Create Posts',
             'perm' => 'posts.create',
         ],

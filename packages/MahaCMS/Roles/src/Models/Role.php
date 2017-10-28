@@ -4,6 +4,7 @@ namespace MahaCMS\Roles\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use MahaCMS\Permissions\Traits\HasPermissions;
+use MahaCMS\Permissions\Models\Permission;
 
 class Role extends Model
 {
@@ -20,6 +21,18 @@ class Role extends Model
         return RoleUser::where(
                 ['role_id' => $this->id, 'user_id' => $user->id]
             )->first();
+    }
+
+    public function getPermissions()
+    {
+        $permissions = Permission::all();
+        $p = [];
+        foreach ($permissions as $permission) {
+            if($this->hasPermission($permission)) {
+                array_push($p, $permission);
+            }
+        }
+        return $p;
     }
 
     public function hasPermission($permission)

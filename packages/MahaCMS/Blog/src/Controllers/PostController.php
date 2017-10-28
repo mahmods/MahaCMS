@@ -30,7 +30,7 @@ class PostController extends Controller
             return response()->json(['form' => [
                 ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'value' => ''],
                 ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => ''],
-                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => ''],
+                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => '', 'editor' => true],
                 ['name' => 'user_id', 'value' => $user->id]
             ]]);
         } else {

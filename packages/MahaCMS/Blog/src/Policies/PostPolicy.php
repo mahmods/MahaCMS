@@ -9,9 +9,16 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
+    public function before($user)
+    {
+        if (User::findOrFail($user->id)->superAdmin()) {
+            return true;
+        }
+    }
+
     public function access($user)
     {
-        return User::findOrFail($user->id)->hasAccess('posts');
+        return User::findOrFail($user->id)->hasPermission('posts.access');// User::findOrFail($user->id)->hasAccess('posts');
     }
 
     public function create($user)

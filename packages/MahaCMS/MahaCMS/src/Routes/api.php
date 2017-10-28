@@ -1,6 +1,7 @@
 <?php
-// Route::group([
-//     'namespace' => 'MahaCMS\MahaCMS\Controllers'
-// ], function () {
-//     Route::get('api/packages', 'PackagesController@all');
-// });
+ Route::group([
+     'namespace' => 'MahaCMS\MahaCMS\Controllers',
+     'middleware' => 'MahaCMS.auth'
+ ], function () {
+     Route::get('api/menu', 'PackagesController@all');
+ });

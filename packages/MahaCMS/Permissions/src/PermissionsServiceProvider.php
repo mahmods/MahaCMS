@@ -17,12 +17,8 @@ class PermissionsServiceProvider extends ServiceProvider
 
     protected $permissions = [
         [
-            'name' => 'Create Permissions',
-            'perm' => 'permissions.create',
-        ],
-        [
-            'name' => 'Manage Permissions',
-            'perm' => 'permissions.manage',
+            'name' => 'Permissions access',
+            'perm' => 'permissions.access',
         ]
     ];
 

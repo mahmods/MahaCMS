@@ -6,15 +6,18 @@ use Illuminate\Support\Facades\Facade;
 
 class Packages extends Facade
 {
+    /**
+     * Returns an array of all the installed packages.
+     */
     public static function get()
     {
+        // Check for Laralum packages
         $packages = [];
         $location = __DIR__.'/../../';
-
         $files = is_dir($location) ? scandir($location) : [];
 
         foreach ($files as $package) {
-            if ($package != '.' and $package != '..' and ucfirst($package) != 'MahaCMS' and ucfirst($package) != 'Users') {
+            if ($package != '.' and $package != '..' and ucfirst($package) != 'MahaCMS') {
                 array_push($packages, strtolower($package));
             }
         }
@@ -22,27 +25,71 @@ class Packages extends Facade
         return $packages;
     }
 
+    /**
+     * Returns the package service provider if exists.
+     *
+     * @param string $package
+     */
+    public static function provider($package)
+    {
+        $location = __DIR__.'/../../'.$package.'/src';
+
+        $files = is_dir($location) ? scandir($location) : [];
+
+        foreach ($files as $file) {
+            if (strpos($file, 'ServiceProvider') !== false) {
+                return str_replace('.php', '', $file);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the if the package is installed.
+     *
+     * @param string $package
+     */
+    public static function installed($package)
+    {
+        return in_array($package, static::all());
+    }
+
+    /**
+     * Returns the package menu if exists.
+     *
+     * @param string $package
+     */
+    public static function menu($package)
+    {
+        $dir = __DIR__.'/../../'.$package.'/src';
+        $files = is_dir($dir) ? scandir($dir) : [];
+
+        foreach ($files as $file) {
+            if ($file == 'Menu.json') {
+                $file_r = file_get_contents($dir.'/'.$file);
+
+                return json_decode($file_r, true);
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Gets all packages and orders them by preference.
+     *
+     * @return array
+     */
     public static function all()
     {
-        $packages = [];
-        foreach (static::get() as $package) {
-            $items = [];
-            $dir = __DIR__.'/../../'.$package.'/src';
-            $files = is_dir($dir) ? scandir($dir) : [];
-            foreach ($files as $file) {
-                if ($file == 'Package.json') {
-                    $file_r = file_get_contents($dir.'/'.$file);
-                    foreach (json_decode($file_r, true) as $w) {
-                        array_push($items,  $w);
-                    }
-                    break;
-                }
-            }
-            array_push($packages, ['name' => $package, 'items' => $items]);
-        }
-        
+        $preference = collect(['profile', 'users', 'roles', 'permissions']);
 
-        $preference = collect($packages);
+        collect(static::get())->each(function ($package) use ($preference) {
+            if (!$preference->contains($package)) {
+                $preference->push($package);
+            }
+        });
 
         return $preference->toArray();
     }

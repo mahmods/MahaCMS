@@ -33,4 +33,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    public function superAdmin()
+    {
+        return in_array($this->email, config('mahacms.superadmins'));
+    }
 }

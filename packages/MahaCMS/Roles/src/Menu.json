@@ -1,0 +1,14 @@
+{
+    "items": [
+        {
+            "permission": "roles.access",
+            "text": "Roles list",
+            "link": "/roles"
+        },
+        {
+            "permission": "roles.create",
+            "text": "Create role",
+            "link": "/roles/create"
+        }
+    ]
+}

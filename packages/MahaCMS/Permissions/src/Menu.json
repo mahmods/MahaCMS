@@ -1,0 +1,9 @@
+{
+    "items": [
+        {
+            "permission": "permissions.access",
+            "text": "Permissions list",
+            "link": "/permissions"
+        }
+    ]
+}

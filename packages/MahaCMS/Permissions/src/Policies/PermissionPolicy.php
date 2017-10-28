@@ -9,23 +9,15 @@ class PermissionPolicy
 {
     use HandlesAuthorization;
 
+    public function before($user)
+    {
+        if (User::findOrFail($user->id)->superAdmin()) {
+            return true;
+        }
+    }
+
     public function access($user)
     {
-        return User::findOrFail($user->id)->hasAccess('permissions');
-    }
-
-    public function create($user)
-    {
-        return User::findOrFail($user->id)->hasPermission('permissions.create');
-    }
-
-    public function update($user)
-    {
-        return User::findOrFail($user->id)->hasPermission('permissions.update');
-    }
-
-    public function delete($user)
-    {
-        return User::findOrFail($user->id)->hasPermission('permissions.delete');
+        return User::findOrFail($user->id)->hasPermission('permissions.access');// User::findOrFail($user->id)->hasAccess('permissions');
     }
 }

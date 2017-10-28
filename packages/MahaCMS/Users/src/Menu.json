@@ -1,0 +1,14 @@
+{
+    "items": [
+        {
+            "permission": "users.access",
+            "text": "Users list",
+            "link": "/users"
+        },
+        {
+            "permission": "users.create",
+            "text": "Create user",
+            "link": "/users/create"
+        }
+    ]
+}

@@ -1,17 +1,18 @@
 <template>
-	<div>
+	<div v-if="!loading">
         <table class="table">
             <thead>
                 <tr>
                     <th v-for="col in this.data.columns" :key="col[0]">{{col[1]}}</th>
-					<th v-if="hasAccess">Actions</th>
+					<th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in this.data.items" :key="item.id">
                     <td v-for="k in item" :key="k">{{k}}</td>
-					<td v-if="hasAccess">
-						<router-link class="btn btn-primary" :to="'/dashboard/'+ $route.params.p + '/' +item.id+'/update'">Edit</router-link>
+					<td>
+						<router-link class="btn btn-success" :to="'/dashboard/users/' +item.id+'/roles'">Roles</router-link>
+						<router-link class="btn btn-primary" :to="'/dashboard/users/' +item.id+'/update'">Edit</router-link>
 						<button class="btn btn-danger" v-on:click="remove(item.id)">Delete</button>
 					</td>
                 </tr>
@@ -23,18 +24,16 @@
 <script>
 import axios from 'axios'
 import Auth from '../../store/Auth'
-import Permissions from '../../store/Permissions'
 export default {
 	data() {
 		return {
 			data: [],
 			auth: Auth.state,
-			permissions: null
+			loading: true
 		}
 	},
-	created() {
+	mounted() {
 		Auth.init()
-		Permissions.init().then(r => this.permissions = r.data.permissions)
 		this.getData()
 	},
 	watch: {
@@ -44,25 +43,39 @@ export default {
 	},
 	methods: {
 		getData() {
+			this.loading = true;
 			axios({
 				method: 'GET',
-				url: '/api/' + this.$route.params.p,
+				url: '/api/users',
 				headers: {
 					'Authorization': 'Bearer ' + this.auth.api_token
 				}
 			})
 			.then(response => {
 				this.data = response.data
+				this.loading = false;
+			})
+		},
+		remove(id) {
+			axios({
+				method: 'DELETE',
+				url: '/api/users/' + id,
+				headers: {
+					'Authorization': 'Bearer ' + this.auth.api_token
+				}
+			})
+			.then(response => {
+				if(response.data.success) {
+					this.getData();
+				}
 			})
 		}
-	},
-	computed: {
-		hasAccess() {
-			if(!this.permissions) { return false }
-			return this.permissions.filter(i => {
-				return (i.perm === `${this.$route.params.p}.manage`)
-			}).length > 0
-		}
-	}
+    },
 }
 </script>
+
+<style>
+	button {
+		cursor: pointer;
+	}
+</style>
