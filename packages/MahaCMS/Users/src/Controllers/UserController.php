@@ -43,6 +43,10 @@ class UserController extends Controller
             $newUser = new User($request->all());
             $newUser->password = bcrypt($request->password);
             $newUser->save();
+
+            $profile = new Profile(['user_id' => $newUser->id]);
+            $profile->first_name = $newUser->name;
+            $profile->save();
     
             return response()->json(['success' => true ]);
         }

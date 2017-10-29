@@ -9,6 +9,16 @@
             "permission": "posts.create",
             "text": "Create post",
             "link": "/posts/create"
+        },
+        {
+            "permission": "posts.create",
+            "text": "Categories",
+            "link": "/categories"
+        },
+        {
+            "permission": "posts.create",
+            "text": "Create category",
+            "link": "/categories/create"
         }
     ]
 }

@@ -10,4 +10,5 @@ Route::group([
     //Route::put('api/posts/{id}', 'PostController@update');
     //Route::delete('api/posts/{id}', 'PostController@destroy');
     Route::resource('api/posts', 'PostController');
+    Route::resource('api/categories', 'CategoryController');
 });

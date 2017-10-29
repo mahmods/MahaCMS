@@ -1,6 +1,7 @@
 
 import VueRouter from 'vue-router'
 
+import Blog from './components/blog'
 import CreateForm from './components/forms/create'
 import EditForm from './components/forms/edit'
 import AccessForm from './components/forms/access'
@@ -13,10 +14,12 @@ import Profile from './components/dashboard/profile'
 import UsersList from './components/dashboard/users'
 import UsersRoles from './components/dashboard/usersRoles'
 import RolesList from './components/dashboard/roles'
+import PostsList from './components/dashboard/posts/index'
 import RolesPermissions from './components/dashboard/rolesPermissions'
 const router = new VueRouter({
     mode: 'history',
     routes: [
+        { path: '/', component: Blog },
         { path: '/login', component: Login },
         { path: '/register', component: Register },
         {
@@ -24,6 +27,7 @@ const router = new VueRouter({
         	children: [
                 { path: 'settings', component: Settings },
                 { path: 'profile', component: Profile },
+                { path: 'posts', component: PostsList },
                 { path: 'users', component: UsersList },
                 { path: 'users/:id/roles', component: UsersRoles },
                 { path: 'roles', component: RolesList },

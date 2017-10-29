@@ -3,7 +3,6 @@ export default function (Vue) {
         setAuth: (api_token, user_id) => {
             localStorage.setItem('api_token', api_token)
             localStorage.setItem('user_id', user_id)
-            this.initAuth()
         },
 
         getToken: () => {
@@ -13,7 +12,6 @@ export default function (Vue) {
         destroy: () => {
             localStorage.removeItem('api_token')
             localStorage.removeItem('user_id')
-            this.initAuth()
         }
     }
 

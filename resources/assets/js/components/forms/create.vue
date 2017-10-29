@@ -15,6 +15,14 @@
 				</label>
 				</div>
 			</div>
+			<div v-else-if="item.type == 'select'" class="form-group">
+				<select class="form-control" v-model="item.value">
+					<option v-for="option in item.options" :key="option.id" :value="option.id">{{option.name}}</option>
+				</select>
+			</div>
+			<div v-else-if="item.type == 'image'" class="form-group">
+			<input @change="onImageChange(item, $event)" type="file" accept="images/*" class="form-control-file">
+		</div>
 		  </div>
 		  <button type="submit" class="btn btn-primary">Create</button>
 		</form>
@@ -59,6 +67,19 @@ export default {
 				this.loading = false;
 			})
 		},
+		onImageChange(item, e) {
+			let files = e.target.files || e.dataTransfer.files;
+			if (!files.length)
+				return;
+			this.createImage(files[0], item);
+		},
+		createImage(file, item) {
+			let reader = new FileReader();
+			reader.onload = (e) => {
+				item.value = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		},
 		create() {
 			var payload = {}
 			this.data.form.forEach(element => {
@@ -76,6 +97,10 @@ export default {
 			})
 			.then(response => {
 				this.data.form.id = response.data.id
+				if(response.data.success) {
+						this.$router.push('/dashboard/' + this.$route.params.p)
+						this.$toasted.show(this.$route.params.p + ' created successfully!', {type: 'success'})
+					}
 			
 			this.data.form.forEach(element => {
 				if(element.type == "selectCheckBox") {
@@ -94,7 +119,7 @@ export default {
 					}
 				})
 				.then(response => {
-					//console.log(response.data)
+					
 				})	
 				}
 			})	

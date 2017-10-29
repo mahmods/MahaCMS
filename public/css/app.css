@@ -9717,3 +9717,13 @@ a.text-dark:hover {
   visibility: hidden !important;
 }
 
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+

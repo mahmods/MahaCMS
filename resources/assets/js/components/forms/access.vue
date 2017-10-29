@@ -51,6 +51,21 @@ export default {
 			.then(response => {
 				this.data = response.data
 			})
+		},
+		remove(id) {
+			axios({
+				method: 'DELETE',
+				url: '/api/' + this.$route.params.p + '/' + id,
+				headers: {
+					'Authorization': 'Bearer ' + this.$auth.getToken()
+				}
+			})
+			.then(response => {
+				if(response.data.success) {
+					this.$toasted.show(this.$route.params.p + ' deleted successfully!', {type: 'success'})
+					this.getData();
+				}
+			})
 		}
 	},
 	computed: {

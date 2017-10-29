@@ -4,14 +4,17 @@ namespace MahaCMS\Blog;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use MahaCMS\Blog\Models\Post;
+use MahaCMS\Blog\Models\Category;
 use MahaCMS\Blog\Policies\PostPolicy;
+use MahaCMS\Blog\Policies\CategoryPolicy;
 use MahaCMS\Permissions\PermissionsChecker;
 use Illuminate\Support\Facades\Gate;
 
 class BlogServiceProvider extends ServiceProvider
 {
     protected $policies = [
-        Post::class => PostPolicy::class
+        Post::class => PostPolicy::class,
+        Category::class => CategoryPolicy::class
     ];
 
     protected $permissions = [
@@ -26,6 +29,18 @@ class BlogServiceProvider extends ServiceProvider
         [
             'name' => 'Manage Posts',
             'perm' => 'posts.manage',
+        ],
+        [
+            'name' => 'Access Categories',
+            'perm' => 'categories.access',
+        ],
+        [
+            'name' => 'Create Categories',
+            'perm' => 'categories.create',
+        ],
+        [
+            'name' => 'Manage Categories',
+            'perm' => 'categories.manage',
         ]
     ];
 

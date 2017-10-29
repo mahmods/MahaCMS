@@ -2,11 +2,18 @@
 	<div>
 		<form @submit.prevent="create">
 			<h1>Edit {{$route.params.p}}</h1>
-		  <div v-for="item in form" :key="item.name" class="form-group">
+		  <div v-for="item in form" :key="item.id" class="form-group">
 		    <label>{{item.label}}</label>
 		    <input v-if="item.type == 'text'" v-model="item.value" type="text" class="form-control">
-		    <textarea v-if="item.type == 'textarea'" v-model="item.value" class="form-control"></textarea>
+			<vue-editor v-if="item.editor" v-model="item.value"></vue-editor>
+		    <textarea v-else-if="item.type == 'textarea'" v-model="item.value" class="form-control"></textarea>
+			<div v-if="item.type == 'select'" class="form-group">
+				<select class="form-control" v-model="item.value">
+					<option v-for="option in item.options" :key="option.id" :value="option.id">{{option.name}}</option>
+				</select>
+			</div>
 		  </div>
+
 		  <button type="submit" class="btn btn-primary">Edit</button>
 		</form>
 	</div>
@@ -14,11 +21,15 @@
 
 <script>
 import axios from 'axios'
+import { VueEditor } from 'vue2-editor'
+
 export default {
+	components: {
+      VueEditor
+   },
 	data() {
 		return {
 			form: [],
-			auth: Auth.state
 		}
 	},
 	mounted() {

@@ -41,7 +41,6 @@ export default {
 		}
 	},
 	created() {
-		console.log(this.$auth)
 		axios({
 			method: 'GET',
 			url: '/api/menu',

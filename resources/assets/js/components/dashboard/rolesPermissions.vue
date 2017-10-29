@@ -38,7 +38,7 @@ export default {
 				method: 'GET',
 				url: '/api/roles/' + this.$route.params.id + '/permissions',
 				headers: {
-					'Authorization': 'Bearer ' + this.$auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {

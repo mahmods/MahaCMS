@@ -39,7 +39,7 @@ export default {
 				method: 'GET',
 				url: '/api/users/' + this.$route.params.id + '/roles',
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.getToken()
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {

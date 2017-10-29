@@ -20,6 +20,7 @@
         "medium-editor": "^5.23.2",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1",
+        "vue-toasted": "^1.1.22",
         "vue2-editor": "^2.0.26"
     }
 }
