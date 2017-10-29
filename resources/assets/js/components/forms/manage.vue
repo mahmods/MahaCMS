@@ -22,17 +22,14 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../../store/Auth'
 export default {
 	data() {
 		return {
 			data: [],
-			auth: Auth.state,
 			loading: true
 		}
 	},
 	mounted() {
-		Auth.init()
 		Permissions.init()
 		this.getData()
 	},
@@ -48,7 +45,7 @@ export default {
 				method: 'GET',
 				url: '/api/' + this.$route.params.p,
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {
@@ -61,7 +58,7 @@ export default {
 				method: 'DELETE',
 				url: '/api/' + this.$route.params.p + '/' + id,
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {

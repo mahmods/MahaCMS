@@ -14,7 +14,6 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../../store/Auth'
 export default {
 	data() {
 		return {
@@ -23,7 +22,6 @@ export default {
 		}
 	},
 	mounted() {
-		Auth.init()
 		this.getForm()
 	},
 	watch: {
@@ -37,7 +35,7 @@ export default {
 				method: 'GET',
 				url: '/api/' + this.$route.params.p + '/' + this.$route.params.id + '/edit',
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {
@@ -56,7 +54,7 @@ export default {
 				url: '/api/' + this.$route.params.p + '/' + this.$route.params.id,
 				data: payload,
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {

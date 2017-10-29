@@ -15,18 +15,15 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../../store/Auth'
 export default {
 	data() {
 		return {
 			data: [],
-			auth: Auth.state,
             loading: true,
             selected: []
 		}
 	},
 	mounted() {
-		Auth.init()
 		this.getData()
 	},
 	watch: {
@@ -41,7 +38,7 @@ export default {
 				method: 'GET',
 				url: '/api/roles/' + this.$route.params.id + '/permissions',
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.api_token
 				}
 			})
 			.then(response => {
@@ -55,13 +52,12 @@ export default {
 			})
         },
         save() {
-            console.log(this.selected)
             axios({
 				method: 'POST',
                 url: '/api/roles/' + this.$route.params.id + '/permissions',
                 data: this.selected,
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {

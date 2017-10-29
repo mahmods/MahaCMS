@@ -22,7 +22,6 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../../store/Auth'
 export default {
 	data() {
 		return {
@@ -30,12 +29,8 @@ export default {
                 email: '',
                 password: ''
             },
-            auth: Auth.state,
             error: null
 		}
-	},
-	created() {
-		Auth.init()
 	},
 	methods: {
 		login() {
@@ -46,7 +41,7 @@ export default {
 			})
 			.then(response => {
 				if(response.data.authenticated) {
-                    Auth.set(response.data.api_token, response.data.user_id)
+                    this.$auth.setAuth(response.data.api_token, response.data.user_id)
                     this.$router.push('/dashboard')
 
                 } else {

@@ -20,13 +20,11 @@ export default {
 	data() {
 		return {
 			data: [],
-			auth: Auth.state,
             loading: true,
             selected: []
 		}
 	},
 	mounted() {
-		Auth.init()
 		this.getData()
 	},
 	watch: {
@@ -41,7 +39,7 @@ export default {
 				method: 'GET',
 				url: '/api/users/' + this.$route.params.id + '/roles',
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.auth.getToken()
 				}
 			})
 			.then(response => {
@@ -61,7 +59,7 @@ export default {
                 url: '/api/users/' + this.$route.params.id + '/roles',
                 data: this.selected,
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {

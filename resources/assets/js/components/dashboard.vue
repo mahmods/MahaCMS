@@ -32,23 +32,21 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../store/Auth'
 import Permissions from '../store/Permissions'
 export default {
 	data() {
 		return {
-			auth: Auth.state,
 			permissions: Permissions.state,
 			menu: []
 		}
 	},
 	created() {
-		Auth.init()
+		console.log(this.$auth)
 		axios({
 			method: 'GET',
 			url: '/api/menu',
 			headers: {
-				'Authorization': `Bearer ${this.auth.api_token}`
+				'Authorization': `Bearer ${this.$auth.getToken()}`
 			}
 		}).then(response => this.menu = response.data.menu)
 	},

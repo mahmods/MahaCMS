@@ -23,7 +23,6 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../../store/Auth'
 import { VueEditor } from 'vue2-editor'
 
 export default {
@@ -33,13 +32,11 @@ export default {
 	data() {
 		return {
 			data: [],
-			auth: Auth.state,
 			loading: true,
 			selected: []
 		}
 	},
 	mounted() {
-		Auth.init()
 		this.getForm()
 	},
 	watch: {
@@ -54,7 +51,7 @@ export default {
 				method: 'GET',
 				url: '/api/' + this.$route.params.p + '/create',
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {
@@ -74,7 +71,7 @@ export default {
 				url: '/api/' + this.$route.params.p,
 				data: payload,
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {
@@ -93,7 +90,7 @@ export default {
 					url: '/api/' + this.$route.params.p + '/' + this.data.form.id + '/' + element.name,
 					data: this.selected,
 					headers: {
-						'Authorization': 'Bearer ' + this.auth.api_token
+						'Authorization': 'Bearer ' + this.$auth.getToken()
 					}
 				})
 				.then(response => {

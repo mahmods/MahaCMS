@@ -22,18 +22,15 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../../store/Auth'
 import Permissions from '../../store/Permissions'
 export default {
 	data() {
 		return {
 			data: [],
-			auth: Auth.state,
 			permissions: null
 		}
 	},
 	created() {
-		Auth.init()
 		Permissions.init().then(r => this.permissions = r.data.permissions)
 		this.getData()
 	},
@@ -48,7 +45,7 @@ export default {
 				method: 'GET',
 				url: '/api/' + this.$route.params.p,
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {

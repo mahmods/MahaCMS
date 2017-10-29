@@ -24,17 +24,14 @@
 
 <script>
 import axios from 'axios'
-import Auth from '../../store/Auth'
 export default {
 	data() {
 		return {
 			profile: [],
-			auth: Auth.state,
 			loading: true
 		}
 	},
 	mounted() {
-		Auth.init()
 		this.getData()
 	},
 	methods: {
@@ -44,7 +41,7 @@ export default {
 				method: 'GET',
 				url: '/api/profile',
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				}
 			})
 			.then(response => {
@@ -57,7 +54,7 @@ export default {
 				method: 'POST',
 				url: '/api/profile',
 				headers: {
-					'Authorization': 'Bearer ' + this.auth.api_token
+					'Authorization': 'Bearer ' + this.$auth.getToken()
 				},
 				data: this.profile
 			})
