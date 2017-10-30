@@ -1,18 +1,16 @@
 {
     "name": "mahacms/blog",
     "description": "MahaCMS package for creating blog.",
+    "version": "1.0",
     "authors": [
         {
             "name": "Mahmoud Slah",
             "email": "mahmoudslah25@gmail.com"
         }
     ],
-    "require": {},
-    "extra": {
-        "laravel": {
-            "providers": [
-                "MahaCMS\\Blog\\BlogServiceProvider"
-            ]
+    "autoload": {
+        "psr-4": {
+            "MahaCMS\\Blog\\": "./src"
         }
     }
 }

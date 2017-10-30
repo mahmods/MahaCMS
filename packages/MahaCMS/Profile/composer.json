@@ -1,6 +1,6 @@
 {
-    "name": "mahacms/users",
-    "description": "MahaCMS package for users management.",
+    "name": "mahacms/profile",
+    "description": "MahaCMS package for manage user profile.",
     "version": "1.0",
     "authors": [
         {
@@ -11,7 +11,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "MahaCMS\\Users\\": "./src"
+            "MahaCMS\\Profile\\": "./src"
         }
     }
 }

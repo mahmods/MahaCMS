@@ -168,10 +168,6 @@ return [
          * Package Service Providers...
          */
         MahaCMS\MahaCMS\MahaCMSServiceProvider::class,
-        //MahaCMS\Blog\BlogServiceProvider::class,
-        //MahaCMS\Users\UsersServiceProvider::class,
-        //MahaCMS\Permissions\PermissionsServiceProvider::class,
-        //MahaCMS\Roles\RolesServiceProvider::class,
         /*
          * Application Service Providers...
          */
