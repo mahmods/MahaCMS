@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use MahaCMS\Users\Models\User;
 use MahaCMS\Roles\Models\Role;
+use MahaCMS\Profile\Models\Profile;
 use Hash;
 use Schema;
 use Auth;
@@ -25,21 +26,24 @@ class UserController extends Controller
 
     public function create()
     {
-        $user = Auth::guard('api')->user();
-        if ($user->can('create', User::class)) {
-            return response()->json(['form' => [
-                ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => ''],
-                ['name' => 'email', 'label' => 'Email', 'type' => 'text', 'value' => ''],
-                ['name' => 'password', 'label' => 'Password', 'type' => 'text', 'value' => '']
-                ]]);
+        $userForAuth = Auth::guard('api')->user();
+        if ($userForAuth->can('create', User::class)) {
+            return User::form();
         }
         return response()->json(['authorized' => false]);
     }
 
     public function store(Request $request)
     {
+        $this->authorize('create5', User::class);
         $user = Auth::guard('api')->user();
+
         if ($user->can('create', User::class)) {
+            $request->validate([
+                'name' => 'required|max:60',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|between:6,18|confirmed'
+            ]);
             $newUser = new User($request->all());
             $newUser->password = bcrypt($request->password);
             $newUser->save();
@@ -58,11 +62,7 @@ class UserController extends Controller
         $user = User::find($id);
         $userForAuth = Auth::guard('api')->user();
         if ($userForAuth->can('update', $user)) {
-            return response()->json(['form' => [
-                ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => $user->name],
-                ['name' => 'email', 'label' => 'Email', 'type' => 'text', 'value' => $user->email],
-                ['name' => 'password', 'label' => 'Password', 'type' => 'text', 'value' => '']
-                ]]);
+            return User::form($user);
         }
         return response()->json(['authorized' => false]);
     }
@@ -72,6 +72,11 @@ class UserController extends Controller
         $user = User::find($id);
         $userForAuth = Auth::guard('api')->user();
         if ($userForAuth->can('update', $user)) {
+            $request->validate([
+                'name' => 'required|max:60',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|between:6,18|confirmed'
+            ]);
             $user->update($request->all());
             return response()->json(['success' => true ]);
         }

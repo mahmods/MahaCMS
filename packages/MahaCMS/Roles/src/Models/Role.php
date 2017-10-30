@@ -11,8 +11,9 @@ class Role extends Model
     use HasPermissions;
     protected $fillable = ['name', 'description'];
 
-    public static function form()
+    public static function form($id = null)
     {
+        $role = Role::find($id);
         return json_encode(array(
             'form' => [
                 array(
@@ -20,14 +21,14 @@ class Role extends Model
                     'innerType' => 'text',
                     'label' => 'Name',
                     'model' => 'name',
-                    'value' => ''
+                    'value' => $role ? $role->name : ''
                 ),
                 array(
                     'type' => 'input',
                     'innerType' => 'text',
                     'label' => 'Description',
                     'model' => 'description',
-                    'value' => ''
+                    'value' => $role ? $role->description : ''
                 ),
             ]
         ));

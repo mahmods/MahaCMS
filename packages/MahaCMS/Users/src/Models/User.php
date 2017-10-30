@@ -21,6 +21,42 @@ class User extends Authenticatable
         'name', 'email', 'password'
     ];
 
+    public static function form($model = null)
+    {
+        return json_encode(array(
+            'form' => [
+                array(
+                    'type' => 'input',
+                    'innerType' => 'text',
+                    'label' => 'Name',
+                    'model' => 'name',
+                    'value' => $model ? $model->name : ''
+                ),
+                array(
+                    'type' => 'input',
+                    'innerType' => 'email',
+                    'label' => 'Email Address',
+                    'model' => 'email',
+                    'value' => $model ? $model->email : ''
+                ),
+                array(
+                    'type' => 'input',
+                    'innerType' => 'password',
+                    'label' => 'Password',
+                    'model' => 'password',
+                    'value' => ''
+                ),
+                array(
+                    'type' => 'input',
+                    'innerType' => 'password',
+                    'label' => 'Password Confirmation',
+                    'model' => 'password_confirmation',
+                    'value' => ''
+                ),
+            ]
+        ));
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

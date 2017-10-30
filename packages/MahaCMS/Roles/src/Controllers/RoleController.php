@@ -48,6 +48,7 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        return Role::form($id);
         $role = Role::find($id);
         $user = Auth::guard('api')->user();
         if ($user->can('update', $role)) {
