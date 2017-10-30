@@ -15025,7 +15025,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/blog.vue"
+Component.options.__file = "resources\\assets\\js\\components\\blog.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -16389,7 +16389,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/forms/create.vue"
+Component.options.__file = "resources\\assets\\js\\components\\forms\\create.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -16417,17 +16417,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_editor__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue2_editor___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue2_editor__);
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -16463,11 +16455,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			data: [],
-			loading: true,
-			selected: []
+			loading: true
 		};
 	},
-	mounted: function mounted() {
+	created: function created() {
 		this.getForm();
 	},
 
@@ -16481,70 +16472,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			var _this = this;
 
 			this.loading = true;
-			__WEBPACK_IMPORTED_MODULE_0_axios___default()({
-				method: 'GET',
-				url: '/api/' + this.$route.params.p + '/create',
-				headers: {
-					'Authorization': 'Bearer ' + this.$auth.getToken()
-				}
-			}).then(function (response) {
+			Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])(this.$route.params.p + '/create', this).then(function (response) {
 				_this.data = response.data;
 				_this.loading = false;
 			});
 		},
-		onImageChange: function onImageChange(item, e) {
+		onFileChange: function onFileChange(item, e) {
 			var files = e.target.files || e.dataTransfer.files;
 			if (!files.length) return;
-			this.createImage(files[0], item);
-		},
-		createImage: function createImage(file, item) {
-			var reader = new FileReader();
-			reader.onload = function (e) {
-				item.value = e.target.result;
-			};
-			reader.readAsDataURL(file);
+			item.value = files[0];
 		},
 		create: function create() {
 			var _this2 = this;
 
-			var payload = {};
-			this.data.form.forEach(function (element) {
-				if (element.type !== "selectCheckBox") {
-					payload[element.name] = element.value;
-				}
+			var form = new FormData();
+			this.data.form.forEach(function (input) {
+				form.set(input.name, input.value);
 			});
-			__WEBPACK_IMPORTED_MODULE_0_axios___default()({
-				method: 'POST',
-				url: '/api/' + this.$route.params.p,
-				data: payload,
-				headers: {
-					'Authorization': 'Bearer ' + this.$auth.getToken()
-				}
-			}).then(function (response) {
+			Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(this.$route.params.p, form, this).then(function (response) {
 				_this2.data.form.id = response.data.id;
 				if (response.data.success) {
 					_this2.$router.push('/dashboard/' + _this2.$route.params.p);
 					_this2.$toasted.show(_this2.$route.params.p + ' created successfully!', { type: 'success' });
 				}
-
-				_this2.data.form.forEach(function (element) {
-					if (element.type == "selectCheckBox") {
-						var payload2 = {};
-						Object.keys(_this2.data.form[_this2.data.form.indexOf(element)].value).forEach(function (e) {
-							if (e) {
-								payload2[e] = '';
-							}
-						});
-						__WEBPACK_IMPORTED_MODULE_0_axios___default()({
-							method: 'POST',
-							url: '/api/' + _this2.$route.params.p + '/' + _this2.data.form.id + '/' + element.name,
-							data: _this2.selected,
-							headers: {
-								'Authorization': 'Bearer ' + _this2.$auth.getToken()
-							}
-						}).then(function (response) {});
-					}
-				});
 			});
 		}
 	}
@@ -16635,133 +16585,66 @@ var render = function() {
                             }
                           }
                         })
-                      : item.type == "selectCheckBox"
-                        ? _c(
-                            "div",
-                            _vm._l(_vm.data[item.name], function(key) {
-                              return _c(
-                                "div",
-                                { key: key.id, staticClass: "form-check" },
-                                [
-                                  _c(
-                                    "label",
-                                    { staticClass: "form-check-label" },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.selected,
-                                            expression: "selected"
-                                          }
-                                        ],
-                                        staticClass: "form-check-input",
-                                        attrs: { type: "checkbox" },
-                                        domProps: {
-                                          value: key.id,
-                                          checked: Array.isArray(_vm.selected)
-                                            ? _vm._i(_vm.selected, key.id) > -1
-                                            : _vm.selected
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            var $$a = _vm.selected,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = key.id,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  (_vm.selected = $$a.concat([
-                                                    $$v
-                                                  ]))
-                                              } else {
-                                                $$i > -1 &&
-                                                  (_vm.selected = $$a
-                                                    .slice(0, $$i)
-                                                    .concat($$a.slice($$i + 1)))
-                                              }
-                                            } else {
-                                              _vm.selected = $$c
-                                            }
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(
-                                        "\n\t\t\t\t" +
-                                          _vm._s(key.name) +
-                                          "\n\t\t\t"
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            })
-                          )
-                        : item.type == "select"
+                      : item.type == "select"
+                        ? _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: item.value,
+                                    expression: "item.value"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      item,
+                                      "value",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              _vm._l(item.options, function(option) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: option.id,
+                                    domProps: { value: option.id }
+                                  },
+                                  [_vm._v(_vm._s(option.name))]
+                                )
+                              })
+                            )
+                          ])
+                        : item.type == "image"
                           ? _c("div", { staticClass: "form-group" }, [
-                              _c(
-                                "select",
-                                {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: item.value,
-                                      expression: "item.value"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  on: {
-                                    change: function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.$set(
-                                        item,
-                                        "value",
-                                        $event.target.multiple
-                                          ? $$selectedVal
-                                          : $$selectedVal[0]
-                                      )
-                                    }
+                              _c("input", {
+                                staticClass: "form-control-file",
+                                attrs: { type: "file", accept: "images/*" },
+                                on: {
+                                  change: function($event) {
+                                    _vm.onImageChange(item, $event)
                                   }
-                                },
-                                _vm._l(item.options, function(option) {
-                                  return _c(
-                                    "option",
-                                    {
-                                      key: option.id,
-                                      domProps: { value: option.id }
-                                    },
-                                    [_vm._v(_vm._s(option.name))]
-                                  )
-                                })
-                              )
+                                }
+                              })
                             ])
-                          : item.type == "image"
-                            ? _c("div", { staticClass: "form-group" }, [
-                                _c("input", {
-                                  staticClass: "form-control-file",
-                                  attrs: { type: "file", accept: "images/*" },
-                                  on: {
-                                    change: function($event) {
-                                      _vm.onImageChange(item, $event)
-                                    }
-                                  }
-                                })
-                              ])
-                            : _vm._e()
+                          : _vm._e()
                 ],
                 1
               )
@@ -16814,7 +16697,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/forms/edit.vue"
+Component.options.__file = "resources\\assets\\js\\components\\forms\\edit.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -17105,7 +16988,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/forms/access.vue"
+Component.options.__file = "resources\\assets\\js\\components\\forms\\access.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -17346,7 +17229,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/forms/manage.vue"
+Component.options.__file = "resources\\assets\\js\\components\\forms\\manage.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -17639,7 +17522,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/auth/login.vue"
+Component.options.__file = "resources\\assets\\js\\components\\auth\\login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -17855,7 +17738,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/auth/register.vue"
+Component.options.__file = "resources\\assets\\js\\components\\auth\\register.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -18105,7 +17988,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -18162,7 +18045,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\nbody {\n\tbackground: #f4f7fa;\n}\n.dashboard__sideBar {\n\t\tposition: fixed;\n\t\twidth: 300px;\n\t\toverflow-y: scroll;\n\t\ttop: 0;\n\t\tbottom: 0;\n\t\tbackground: #282c37;\n\t\t-ms-flex-preferred-size: 300px;\n\t\t    flex-basis: 300px;\n\t\tpadding: 30px;\n\t\tdisplay: -webkit-box;\n\t\tdisplay: -ms-flexbox;\n\t\tdisplay: flex;\n\t\t-webkit-box-orient: vertical;\n\t\t-webkit-box-direction: normal;\n\t\t    -ms-flex-direction: column;\n\t\t        flex-direction: column;\n\t\ttext-transform: capitalize;\n}\n.dashboard__sideBar--list {\n\t\tpadding: 10px 10px;\n}\n.dashboard__sideBar--list-item {\n\t\tmargin-bottom: 40px;\n\t\tdisplay: -webkit-box;\n\t\tdisplay: -ms-flexbox;\n\t\tdisplay: flex;\n\t\t-webkit-box-orient: vertical;\n\t\t-webkit-box-direction: normal;\n\t\t    -ms-flex-direction: column;\n\t\t        flex-direction: column;\n}\n.dashboard__sideBar--list-item-title {\n\t\tcolor: #fff;\n\t\tfont-size: 1.5em;\n}\n.dashboard__sideBar--list-item-link {\n\t\tcolor: #6a7583;\n\t\tfont-size: 1.2em;\n\t\tpadding-left: 10px;\n}\n.dashboard__sideBar--image {\n\t\tmargin-bottom: 40px;\n\t\tmargin-top: 20px;\n\t\twidth: 100%;\n\t\theight: auto;\n\t\tpadding: 0 50px;\n}\n.dashboard__content {\n\t\tmargin-left: 300px;\n\t\tdisplay: -webkit-box;\n\t\tdisplay: -ms-flexbox;\n\t\tdisplay: flex;\n\t\t-webkit-box-orient: vertical;\n\t\t-webkit-box-direction: normal;\n\t\t    -ms-flex-direction: column;\n\t\t        flex-direction: column;\n}\n.dashboard__content--header {\n\t\tbackground: #fff;\n\t\tpadding: 50px;\n}\n.dashboard__content--container {\n\t\tpadding: 50px;\n}\n", ""]);
+exports.push([module.i, "\nbody {\r\n\tbackground: #f4f7fa;\n}\n.dashboard__sideBar {\r\n\t\tposition: fixed;\r\n\t\twidth: 300px;\r\n\t\toverflow-y: scroll;\r\n\t\ttop: 0;\r\n\t\tbottom: 0;\r\n\t\tbackground: #282c37;\r\n\t\t-ms-flex-preferred-size: 300px;\r\n\t\t    flex-basis: 300px;\r\n\t\tpadding: 30px;\r\n\t\tdisplay: -webkit-box;\r\n\t\tdisplay: -ms-flexbox;\r\n\t\tdisplay: flex;\r\n\t\t-webkit-box-orient: vertical;\r\n\t\t-webkit-box-direction: normal;\r\n\t\t    -ms-flex-direction: column;\r\n\t\t        flex-direction: column;\r\n\t\ttext-transform: capitalize;\n}\n.dashboard__sideBar--list {\r\n\t\tpadding: 10px 10px;\n}\n.dashboard__sideBar--list-item {\r\n\t\tmargin-bottom: 40px;\r\n\t\tdisplay: -webkit-box;\r\n\t\tdisplay: -ms-flexbox;\r\n\t\tdisplay: flex;\r\n\t\t-webkit-box-orient: vertical;\r\n\t\t-webkit-box-direction: normal;\r\n\t\t    -ms-flex-direction: column;\r\n\t\t        flex-direction: column;\n}\n.dashboard__sideBar--list-item-title {\r\n\t\tcolor: #fff;\r\n\t\tfont-size: 1.5em;\n}\n.dashboard__sideBar--list-item-link {\r\n\t\tcolor: #6a7583;\r\n\t\tfont-size: 1.2em;\r\n\t\tpadding-left: 10px;\n}\n.dashboard__sideBar--image {\r\n\t\tmargin-bottom: 40px;\r\n\t\tmargin-top: 20px;\r\n\t\twidth: 100%;\r\n\t\theight: auto;\r\n\t\tpadding: 0 50px;\n}\n.dashboard__content {\r\n\t\tmargin-left: 300px;\r\n\t\tdisplay: -webkit-box;\r\n\t\tdisplay: -ms-flexbox;\r\n\t\tdisplay: flex;\r\n\t\t-webkit-box-orient: vertical;\r\n\t\t-webkit-box-direction: normal;\r\n\t\t    -ms-flex-direction: column;\r\n\t\t        flex-direction: column;\n}\n.dashboard__content--header {\r\n\t\tbackground: #fff;\r\n\t\tpadding: 50px;\n}\n.dashboard__content--container {\r\n\t\tpadding: 50px;\n}\r\n", ""]);
 
 // exports
 
@@ -18377,7 +18260,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/settings.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard\\settings.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -18639,7 +18522,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/profile.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard\\profile.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -18954,7 +18837,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/users.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard\\users.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -19224,7 +19107,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/usersRoles.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard\\usersRoles.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -19488,7 +19371,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/roles.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard\\roles.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -19758,7 +19641,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/posts/index.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard\\posts\\index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -20027,7 +19910,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/rolesPermissions.vue"
+Component.options.__file = "resources\\assets\\js\\components\\dashboard\\rolesPermissions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -20296,7 +20179,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/app.vue"
+Component.options.__file = "resources\\assets\\js\\components\\app.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -20343,6 +20226,52 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = get;
+/* harmony export (immutable) */ __webpack_exports__["b"] = post;
+/* unused harmony export del */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+
+
+function get(url, vue) {
+	return __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+		method: 'GET',
+		url: '/api/' + url,
+		headers: {
+			'Authorization': 'Bearer ' + vue.$auth.getToken()
+		}
+	});
+}
+
+function post(url, data, vue) {
+	return __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+		method: 'POST',
+		url: '/api/' + url,
+		data: data,
+		headers: {
+			'Authorization': 'Bearer ' + vue.$auth.getToken()
+		}
+	});
+}
+
+function del(url, vue) {
+	return __WEBPACK_IMPORTED_MODULE_0_axios___default()({
+		method: 'DELETE',
+		url: '/api/' + url,
+		headers: {
+			'Authorization': 'Bearer ' + vue.$auth.getToken()
+		}
+	});
+}
 
 /***/ })
 /******/ ]);

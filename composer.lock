@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c287ee2916c64b225366a2bdf75f44cc",
+    "content-hash": "a2682bca65b43cae5cdecbbe0bccd8ec",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1034,6 +1034,175 @@
                 "storage"
             ],
             "time": "2017-08-06T17:41:04+00:00"
+        },
+        {
+            "name": "mahacms/blog",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/MahaCMS/Blog",
+                "reference": "67dda57133b769683d8392d35cde3c7740117d0b",
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MahaCMS\\Blog\\": "./src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mahmoud Slah",
+                    "email": "mahmoudslah25@gmail.com"
+                }
+            ],
+            "description": "MahaCMS package for creating blog."
+        },
+        {
+            "name": "mahacms/mahacms",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/MahaCMS/MahaCMS",
+                "reference": "3ae342fd2f7d29b2c7c474d9db4b5bae2bce8e06",
+                "shasum": null
+            },
+            "require": {
+                "mahacms/blog": "^1.0",
+                "mahacms/permissions": "^1.0",
+                "mahacms/profile": "^1.0",
+                "mahacms/roles": "^1.0",
+                "mahacms/settings": "^1.0",
+                "mahacms/users": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MahaCMS\\MahaCMS\\": "./src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mahmoud Slah",
+                    "email": "mahmoudslah25@gmail.com"
+                }
+            ],
+            "description": "MahaCMS"
+        },
+        {
+            "name": "mahacms/permissions",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/MahaCMS/Permissions",
+                "reference": "98fda215ed2f40b89553f9f1844a4c9913b5d2a4",
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MahaCMS\\Permissions\\": "./src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mahmoud Slah",
+                    "email": "mahmoudslah25@gmail.com"
+                }
+            ],
+            "description": "MahaCMS package for manage permissions."
+        },
+        {
+            "name": "mahacms/profile",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/MahaCMS/Profile",
+                "reference": "7a38e92424077fba15370503cfcae95a4e7534de",
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MahaCMS\\Profile\\": "./src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mahmoud Slah",
+                    "email": "mahmoudslah25@gmail.com"
+                }
+            ],
+            "description": "MahaCMS package for manage user profile."
+        },
+        {
+            "name": "mahacms/roles",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/MahaCMS/Roles",
+                "reference": "fe85b17f15234f2a9214ee45a7203cf370da1964",
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MahaCMS\\Roles\\": "./src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mahmoud Slah",
+                    "email": "mahmoudslah25@gmail.com"
+                }
+            ],
+            "description": "MahaCMS package for manage roles."
+        },
+        {
+            "name": "mahacms/settings",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/MahaCMS/Settings",
+                "reference": "e103d28d6e287da2e9d22ac73bb177a7e93e33d4",
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MahaCMS\\Settings\\": "./src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mahmoud Slah",
+                    "email": "mahmoudslah25@gmail.com"
+                }
+            ],
+            "description": "MahaCMS package for settings."
+        },
+        {
+            "name": "mahacms/users",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/MahaCMS/Users",
+                "reference": "c2f5744063cb2a0e040ab62e14eb2292354948d2",
+                "shasum": null
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MahaCMS\\Users\\": "./src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Mahmoud Slah",
+                    "email": "mahmoudslah25@gmail.com"
+                }
+            ],
+            "description": "MahaCMS package for users management."
         },
         {
             "name": "monolog/monolog",

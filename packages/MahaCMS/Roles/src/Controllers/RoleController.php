@@ -28,10 +28,8 @@ class RoleController extends Controller
         if ($user->can('create', Role::class)) {
             return response()->json(['form' => [
                 ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => ''],
-                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => ''],
-                ['name' => 'permissions', 'label' => 'Permissions', 'type' => 'selectCheckBox', 'value' => []]
-            ],
-            'permissions' => Permission::all()]);
+                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => '']
+            ]]);
         }
         return response()->json(['authorized' => false]);
     }

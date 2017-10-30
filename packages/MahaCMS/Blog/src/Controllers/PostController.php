@@ -36,12 +36,12 @@ class PostController extends Controller
     
     public function store(Request $request)
     {
+        //return response()->json(['msg' => 'a7a']);
         $user = Auth::guard('api')->user();
         if ($user->can('create', Post::class)) {
             if(!$request->hasFile('image') && !$request->file('image')->isValid()) {
                 return abort(404, 'Image not uploaded');
             }
-            $imageData = $request->get('image');
             $fileName = $this->getFileName($request->image);
             $request->image->move(base_path('public/img'), $fileName);
             $post = new Post($request->all());
