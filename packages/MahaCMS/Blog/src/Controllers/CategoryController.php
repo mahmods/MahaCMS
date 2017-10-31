@@ -4,6 +4,7 @@ namespace MahaCMS\Blog\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use MahaCMS\Blog\Models\Category;
+use MahaCMS\Blog\Models\Post;
 use Auth;
 
 class CategoryController extends Controller
@@ -20,6 +21,12 @@ class CategoryController extends Controller
         return response()->json(['authorized' => false]);
     }
 
+    public function show($id)
+    {
+        $posts = Post::where('category_id', $id)->get();
+        return response()->json(['items' => $posts,]);
+    }
+
     public function create()
     {
         $user = Auth::guard('api')->user();
@@ -31,6 +38,7 @@ class CategoryController extends Controller
         return response()->json(['authorized' => false]);
 
     }
+    
     
     public function store(Request $request)
     {

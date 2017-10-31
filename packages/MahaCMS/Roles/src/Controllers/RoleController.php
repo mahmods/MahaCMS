@@ -24,6 +24,7 @@ class RoleController extends Controller
 
     public function create()
     {
+        return Role::form();
         $user = Auth::guard('api')->user();
         if ($user->can('create', Role::class)) {
             return response()->json(['form' => [
@@ -64,7 +65,7 @@ class RoleController extends Controller
         $user = Auth::guard('api')->user();
         if ($user->can('update', $role)) {
             $role->update($request->all());
-            return response()->json(['success' => true ]);
+            return response()->json(['success' => true, 'id' => $role->id ]);
         }
         return response()->json(['authorized' => false]);
     }

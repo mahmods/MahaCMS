@@ -17,6 +17,18 @@ class PostController extends Controller
             ]);
     }
 
+    public function query(Request $request)
+    {
+        $category = $request->query('category');
+        $category = Category::where('name', $category)->first();
+        if ($category) {
+            return response()->json([
+                'items' => $category->posts
+                ]);
+        }
+        return response()->json(['error' => 'not found']);
+    }
+
     public function create()
     {
         $user = Auth::guard('api')->user();
@@ -26,7 +38,7 @@ class PostController extends Controller
                 ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => ''],
                 ['name' => 'image', 'label' => 'Image', 'type' => 'image', 'value' => ''],
                 ['name' => 'category_id', 'label' => 'Category', 'type' => 'select', 'value' => '', 'options' => Category::select('id', 'name')->get()],
-                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => '', 'editor' => true],
+                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => ''],
                 ['name' => 'user_id', 'value' => $user->id]
             ]]);
         }
@@ -36,7 +48,6 @@ class PostController extends Controller
     
     public function store(Request $request)
     {
-        //return response()->json(['msg' => 'a7a']);
         $user = Auth::guard('api')->user();
         if ($user->can('create', Post::class)) {
             if(!$request->hasFile('image') && !$request->file('image')->isValid()) {
@@ -65,7 +76,7 @@ class PostController extends Controller
             return response()->json(['form' => [
                 ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'value' => $post->title],
                 ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => $post->description],
-                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => $post->content, 'editor' => true],
+                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => $post->content],
                 ['name' => 'category_id', 'label' => 'Category', 'type' => 'select', 'value' => $post->category->id, 'options' => Category::select('id', 'name')->get()],
                 ['name' => 'user_id', 'value' => $post->user->id]
                 ]]);

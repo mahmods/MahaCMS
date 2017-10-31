@@ -11,6 +11,28 @@ class Role extends Model
     use HasPermissions;
     protected $fillable = ['name', 'description'];
 
+    public static function form()
+    {
+        return json_encode(array(
+            'form' => [
+                array(
+                    'type' => 'input',
+                    'innerType' => 'text',
+                    'label' => 'Name',
+                    'model' => 'name',
+                    'value' => ''
+                ),
+                array(
+                    'type' => 'input',
+                    'innerType' => 'text',
+                    'label' => 'Description',
+                    'model' => 'description',
+                    'value' => ''
+                ),
+            ]
+        ));
+    }
+
     public function users()
     {
         return $this->belongsToMany('MahaCMS\Users\Models\User', 'role_users');
