@@ -31,9 +31,7 @@ class CategoryController extends Controller
     {
         $user = Auth::guard('api')->user();
         if ($user->can('create', Category::class)) {
-            return response()->json(['form' => [
-                ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => ''],
-            ]]);
+            return Category::form();
         }
         return response()->json(['authorized' => false]);
 
@@ -57,9 +55,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $user = Auth::guard('api')->user();
         if ($user->can('update', $category)) {
-            return response()->json(['form' => [
-                ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => $category->name],
-            ]]);
+            return Category::form($category);
         }
         return response()->json(['authorized' => false]);
     }

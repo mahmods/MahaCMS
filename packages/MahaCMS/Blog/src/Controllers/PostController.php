@@ -20,9 +20,10 @@ class PostController extends Controller
     public function query(Request $request)
     {
         $category = $request->query('category');
-        $category = Category::where('name', $category)->first();
+        $category = Category::where('slug', $category)->first();
         if ($category) {
             return response()->json([
+                'name' => $category->name,
                 'items' => $category->posts
                 ]);
         }
@@ -33,14 +34,7 @@ class PostController extends Controller
     {
         $user = Auth::guard('api')->user();
         if ($user->can('create', Post::class)) {
-            return response()->json(['form' => [
-                ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'value' => ''],
-                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => ''],
-                ['name' => 'image', 'label' => 'Image', 'type' => 'image', 'value' => ''],
-                ['name' => 'category_id', 'label' => 'Category', 'type' => 'select', 'value' => '', 'options' => Category::select('id', 'name')->get()],
-                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => ''],
-                ['name' => 'user_id', 'value' => $user->id]
-            ]]);
+            return Post::form();
         }
         return response()->json(['authorized' => false]);
 
