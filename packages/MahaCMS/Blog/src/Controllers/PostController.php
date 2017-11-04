@@ -19,6 +19,11 @@ class PostController extends Controller
             ]);
     }
 
+    public function show($id) {
+        $post = Post::with('user', 'category')->find($id);
+        return $post;
+    }
+
     public function query(Request $request)
     {
         $category = $request->query('category');
