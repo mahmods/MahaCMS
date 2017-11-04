@@ -7,6 +7,8 @@ use MahaCMS\Blog\Models\Post;
 use MahaCMS\Blog\Models\Category;
 use Carbon\Carbon;
 use Auth;
+use File;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -33,69 +35,62 @@ class PostController extends Controller
     public function create()
     {
         $user = Auth::guard('api')->user();
-        if ($user->can('create', Post::class)) {
-            return Post::form();
-        }
-        return response()->json(['authorized' => false]);
-
+        $this->authorizeForUser($user, 'create', Post::class);
+        return Post::form();
     }
     
     public function store(Request $request)
     {
         $user = Auth::guard('api')->user();
-        if ($user->can('create', Post::class)) {
-            if(!$request->hasFile('image') && !$request->file('image')->isValid()) {
-                return abort(404, 'Image not uploaded');
-            }
-            $fileName = $this->getFileName($request->image);
-            $request->image->move(base_path('public/img'), $fileName);
-            $post = new Post($request->all());
-            $post->image = $fileName;
-            $post->save();
-    
-            return response()->json(['success' => true]);
+        $this->authorizeForUser($user, 'create', Post::class);
+        if(!$request->hasFile('image') && !$request->file('image')->isValid()) {
+            return abort(404, 'Image not uploaded');
         }
-        return response()->json(['authorized' => false]);
-    }
+        $fileName = $this->getFileName($request->image);
+        $request->image->move(base_path('public/images'), $fileName);
+        $post = new Post($request->all());
+        $post->image = $fileName;
+        $post->save();
 
-    protected function getFileName($file) {
-        return str_random(32).'.'.$file->extension();
+        return response()->json(['success' => true]);
     }
 
     public function edit($id)
     {
-        $post = Post::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('update', $post)) {
-            return response()->json(['form' => [
-                ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'value' => $post->title],
-                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'value' => $post->description],
-                ['name' => 'content', 'label' => 'Content', 'type' => 'textarea', 'value' => $post->content],
-                ['name' => 'category_id', 'label' => 'Category', 'type' => 'select', 'value' => $post->category->id, 'options' => Category::select('id', 'name')->get()],
-                ['name' => 'user_id', 'value' => $post->user->id]
-                ]]);
-        }
-        return response()->json(['authorized' => false]);
+        $post = Post::find($id);
+        $this->authorizeForUser($user, 'update', $post);
+        return Post::form($post);
     }
+
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('update', $post)) {
-            $post->update($request->all());
-            return response()->json(['success' => true ]);
+        $post = Post::find($id);
+        $this->authorizeForUser($user, 'update', $post);
+        if ($request->hasfile('image') && $request->file('image')->isValid()) {
+            $filename = $this->getFileName($request->image);
+            //return $filename;
+            $request->image->move(base_path('public/images'), $filename);
+            // remove old image
+            File::delete(base_path('public/images/' . $post->image));
+            $post->image = $filename;
+            $post->save();
         }
-        return response()->json(['authorized' => false]);
+        $post->update($request->except('image'));
+        return response()->json(['success' => true ]);
     }
 
     public function destroy($id)
     {
-        $post = Post::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('update', $post)) {
-            $post->delete();
-            return response()->json(['success' => true ]);
-        }
-        return response()->json(['authorized' => false]);
+        $post = Post::find($id);
+        $this->authorizeForUser($user, 'delete', $post);
+        $post->delete();
+        return response()->json(['success' => true ]);
+    }
+
+    protected function getFileName($file) {
+        return str_random(32).'.'.$file->extension();
     }
 }

@@ -12,73 +12,68 @@ class CategoryController extends Controller
     public function index()
     {
         $user = Auth::guard('api')->user();
-        if ($user->can('access', Category::class)) {
-            return response()->json([
-                'items' => Category::select('id', 'name')->get(),
-                'columns' => [['id', '#'], ['name', 'Name']]
-                ]);
-        }
-        return response()->json(['authorized' => false]);
+        $this->authorizeForUser($user, 'access', Category::class);
+        return response()->json([
+            'items' => Category::select('id', 'name')->get(),
+            'columns' => [['id', '#'], ['name', 'Name']]
+            ]);
     }
 
     public function show($id)
     {
         $posts = Post::where('category_id', $id)->get();
-        return response()->json(['items' => $posts,]);
+        return response()->json(['items' => $posts]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $user = Auth::guard('api')->user();
-        if ($user->can('create', Category::class)) {
-            return Category::form();
-        }
-        return response()->json(['authorized' => false]);
-
+        $this->authorizeForUser($user, 'create', Category::class);
+        return Category::form();
     }
     
     
     public function store(Request $request)
     {
         $user = Auth::guard('api')->user();
-        if ($user->can('create', Category::class)) {
-            $permission = new Category($request->all());
-            $permission->save();
-    
-            return response()->json(['success' => true]);
-        }
-        return response()->json(['authorized' => false]);
+        $this->authorizeForUser($user, 'create', Category::class);
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:categories'
+        ]);
+        $permission = new Category($request->all());
+        $permission->save();
+        
+        return response()->json(['success' => true]);
     }
 
     public function edit($id)
     {
-        $category = Category::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('update', $category)) {
-            return Category::form($category);
-        }
-        return response()->json(['authorized' => false]);
+        $category = Category::find($id);
+        $this->authorizeForUser($user, 'update', $category);
+        return Category::form($category);
     }
 
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('update', $category)) {
-            $category->update($request->all());
-            return response()->json(['success' => true ]);
-        }
-        return response()->json(['authorized' => false]);
+        $category = Category::find($id);
+        $this->authorizeForUser($user, 'update', $category);
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:categories'
+        ]);
+        $category->update($request->all());
+        return response()->json(['success' => true ]);
     }
 
     public function destroy($id)
     {
-        $category = Category::find($id);
         $user = Auth::guard('api')->user();
-        if ($user->can('update', $category)) {
-            $category->delete();
-            return response()->json(['success' => true ]);
-        }
-        return response()->json(['authorized' => false]);
+        $category = Category::find($id);
+        $this->authorizeForUser($user, 'delete', $category);
+        $category->delete();
+        return response()->json(['success' => true ]);
     }
 }

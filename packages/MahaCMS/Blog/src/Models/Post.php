@@ -9,7 +9,7 @@ use Auth;
 
 class Post extends Model
 {
-    protected $fillable = ['category_id', 'user_id', 'title', 'description', 'content', 'image'];   
+    protected $fillable = ['title', 'category_id', 'image', 'description', 'content', 'user_id'];   
     
     public static function form($model = null)
     {
