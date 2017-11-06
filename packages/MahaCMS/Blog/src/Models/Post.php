@@ -46,7 +46,8 @@ class Post extends Model
                     'type' => 'textarea',
                     'label' => 'Content',
                     'model' => 'content',
-                    'value' => $model ? $model->content : ''
+                    'value' => $model ? $model->content : '',
+                    'editor' => true
                 ),
                 array(
                     'model' => 'user_id',

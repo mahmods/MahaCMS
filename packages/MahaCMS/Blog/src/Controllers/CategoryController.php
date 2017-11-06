@@ -62,7 +62,7 @@ class CategoryController extends Controller
         $this->authorizeForUser($user, 'update', $category);
         $request->validate([
             'name' => 'required',
-            'slug' => 'required|unique:categories'
+            'slug' => 'required|unique:categories,slug,'.$category->id
         ]);
         $category->update($request->all());
         return response()->json(['success' => true ]);
