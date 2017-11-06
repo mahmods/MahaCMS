@@ -14,5 +14,5 @@ Route::group([
 ], function () {
     Route::post('api/login', 'AuthController@login');
     Route::post('api/register', 'AuthController@register');
-    Route::post('api/logout', 'AuthController@logout');
+    Route::get('api/logout', 'AuthController@logout');
 });

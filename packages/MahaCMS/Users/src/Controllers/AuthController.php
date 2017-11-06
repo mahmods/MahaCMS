@@ -40,9 +40,12 @@ class AuthController extends Controller
         return response()->json(['registered' => true]);
     }
 
-    public function logout(Request $request) 
+    public function logout()
     {
-        
+        $user = Auth::guard('api')->user();
+        $user->api_token = null;
+        $user->save();
+        return response()->json(['success' => true]);
     }
 
     public function getPermissions()
