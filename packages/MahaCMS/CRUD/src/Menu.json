@@ -1,0 +1,9 @@
+{
+    "items": [
+        {
+            "permission": "crud.access",
+            "text": "asdasdas lists",
+            "link": "/posts"
+        }
+    ]
+}

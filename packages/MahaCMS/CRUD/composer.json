@@ -1,0 +1,17 @@
+{
+    "name": "mahacms/crud",
+    "description": "MahaCMS package for settings.",
+    "version": "1.0",
+    "authors": [
+        {
+            "name": "Mahmoud Slah",
+            "email": "mahmoudslah25@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MahaCMS\\CRUD\\": "./src"
+        }
+    }
+}

@@ -14,7 +14,8 @@
         "mahacms/profile": "^1.0",
         "mahacms/roles": "^1.0",
         "mahacms/settings": "^1.0",
-        "mahacms/users": "^1.0"
+        "mahacms/users": "^1.0",
+        "mahacms/crud": "^1.0"
     },
     "autoload": {
         "psr-4": {
