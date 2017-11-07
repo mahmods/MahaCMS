@@ -18,7 +18,7 @@ class UserPolicy
 
     public function access($user)
     {
-        return User::findOrFail($user->id)->hasPermission('users.access');//User::findOrFail($user->id)->hasAccess('users');
+        return User::findOrFail($user->id)->hasPermission('users.access');
     }
 
     public function create($user)
