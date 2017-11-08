@@ -8,11 +8,19 @@ use MahaCMS\Users\Models\User;
 class Menu
 {
     public $name;
+    public $icon;
     public $items = [];
 
     public function name($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function icon($icon)
+    {
+        $this->icon = $icon;
 
         return $this;
     }
@@ -32,6 +40,9 @@ class Menu
             $pm = new self();
             $pm->name(ucfirst($package));
             $pma = Packages::menu($package);
+            if (array_key_exists('icon', $pma)) {
+                $pm->icon($pma['icon']);
+            }
             if (array_key_exists('items', $pma)) {
                 $pm->items = array_merge($pm->items, static::getPackageMenuItems($pma, $user));
             }

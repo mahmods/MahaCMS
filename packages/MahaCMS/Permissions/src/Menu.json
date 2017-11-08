@@ -1,4 +1,5 @@
 {
+    "icon": "unlock-alt",
     "items": [
         {
             "permission": "permissions.access",

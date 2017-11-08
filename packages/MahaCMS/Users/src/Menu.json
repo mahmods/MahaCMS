@@ -1,4 +1,5 @@
 {
+    "icon": "users",
     "items": [
         {
             "permission": "users.access",

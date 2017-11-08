@@ -1,4 +1,5 @@
 {
+    "icon": "pencil",
     "items": [
         {
             "permission": "posts.access",
