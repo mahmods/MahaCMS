@@ -48,6 +48,7 @@ class PostController extends Controller
     {
         $user = Auth::guard('api')->user();
         $this->authorizeForUser($user, 'create', Post::class);
+        $request->validate(Post::$rules);
         if(!$request->hasFile('image') && !$request->file('image')->isValid()) {
             return abort(404, 'Image not uploaded');
         }
@@ -57,7 +58,7 @@ class PostController extends Controller
         $post->image = $fileName;
         $post->save();
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'id' => $post->id]);
     }
 
     public function edit($id)
@@ -72,6 +73,7 @@ class PostController extends Controller
     {
         $user = Auth::guard('api')->user();
         $post = Post::find($id);
+        $request->validate(Post::$rules);
         $this->authorizeForUser($user, 'update', $post);
         if ($request->hasfile('image') && $request->file('image')->isValid()) {
             $filename = $this->getFileName($request->image);
@@ -83,7 +85,7 @@ class PostController extends Controller
             $post->save();
         }
         $post->update($request->except('image'));
-        return response()->json(['success' => true ]);
+        return response()->json(['success' => true, 'id' => $post->id]);
     }
 
     public function destroy($id)

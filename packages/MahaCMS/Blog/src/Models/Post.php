@@ -10,6 +10,15 @@ use Auth;
 class Post extends Model
 {
     protected $fillable = ['title', 'category_id', 'image', 'description', 'content', 'user_id'];   
+
+    public static $rules = [
+        'title' => 'required|max:255',
+        'category_id' => 'required|integer',
+        'image' => 'nullable',
+        'description' => 'required',
+        'content' => 'required',
+        'user_id' => 'required|integer'
+    ];
     
     public static function form($model = null)
     {

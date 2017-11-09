@@ -9,6 +9,11 @@ class Category extends Model
 {
     protected $fillable = ['name', 'slug'];
 
+    public static $rules = [
+        'name' => 'required',
+        'slug' => 'required|unique:categories'
+    ];
+
     public static function form($model = null)
     {
         return json_encode(array(

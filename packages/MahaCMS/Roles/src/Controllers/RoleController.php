@@ -26,6 +26,7 @@ class RoleController extends Controller
     {
         return Role::form();
         $user = Auth::guard('api')->user();
+        $request->validate(Role::$rules);
         if ($user->can('create', Role::class)) {
             return response()->json(['form' => [
                 ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'value' => ''],
@@ -38,6 +39,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $user = Auth::guard('api')->user();
+        $request->validate(Role::$rules);
         if ($user->can('create', Role::class)) {
             $role = new Role($request->all());
             $role->save();
@@ -64,6 +66,7 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         $user = Auth::guard('api')->user();
+        $request->validate($role->rules());
         if ($user->can('update', $role)) {
             $role->update($request->all());
             return response()->json(['success' => true, 'id' => $role->id ]);

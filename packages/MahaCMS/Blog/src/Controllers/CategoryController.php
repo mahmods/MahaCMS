@@ -37,10 +37,7 @@ class CategoryController extends Controller
     {
         $user = Auth::guard('api')->user();
         $this->authorizeForUser($user, 'create', Category::class);
-        $request->validate([
-            'name' => 'required',
-            'slug' => 'required|unique:categories'
-        ]);
+        $request->validate(Category::$rules);
         $permission = new Category($request->all());
         $permission->save();
         
@@ -59,6 +56,7 @@ class CategoryController extends Controller
     {
         $user = Auth::guard('api')->user();
         $category = Category::find($id);
+        $request->validate(Category::$rules);
         $this->authorizeForUser($user, 'update', $category);
         $request->validate([
             'name' => 'required',

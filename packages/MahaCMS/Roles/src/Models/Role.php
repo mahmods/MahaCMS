@@ -11,6 +11,18 @@ class Role extends Model
     use HasPermissions;
     protected $fillable = ['name', 'description'];
 
+    public static $rules = [
+        'name' => 'required|max:255|unique:roles',
+        'description' => 'required|max:255',
+    ];
+
+    public function rules() { 
+        return [
+            'name' => 'required|max:255|unique:roles,name,'.$this->id,
+            'description' => 'required|max:255',
+        ];
+}
+
     public static function form($id = null)
     {
         $role = Role::find($id);
