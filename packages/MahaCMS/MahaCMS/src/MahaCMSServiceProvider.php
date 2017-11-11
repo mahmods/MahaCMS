@@ -16,7 +16,7 @@ class MahaCMSServiceProvider extends ServiceProvider
         $router->aliasMiddleware('MahaCMS.auth', Middleware\MahaCMSAuth::class);
         $this->publishes([__DIR__.'/Config/mahacms.php' => config_path('mahacms.php')], 'mahacms_config');
         $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
-        //$this->loadMigrationsFrom(__DIR__.'/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Migrations');
         $this->app->register('MahaCMS\Users\UsersServiceProvider');
         $this->app->register('MahaCMS\Roles\RolesServiceProvider');
         $this->app->register('MahaCMS\Permissions\PermissionsServiceProvider');
