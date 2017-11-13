@@ -64,6 +64,10 @@ class Menu
             foreach (config('mahacms.menu') as $custom_menu) {
                 $pm = new self();
                 $pm->name(ucfirst($custom_menu['title']));
+                if (array_key_exists('icon', $custom_menu)) {
+                    $pm->icon($custom_menu  ['icon']);
+                }
+                
                 $pm->items = array_merge($pm->items, static::getPackageMenuItems($custom_menu, $user));
 
                 if (count($pm->items) > 0) {

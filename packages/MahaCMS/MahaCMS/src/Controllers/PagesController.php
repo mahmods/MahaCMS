@@ -28,10 +28,17 @@ class PagesController extends Controller
     }
 
     public function store(Request $request) {
+        $request->validate([
+            'slug' => 'required|unique:pages',
+            'view' => 'required',
+            "fields" => 'required|array|min:1',
+            'fields.*.name' => 'required',
+            'fields.*.value' => 'required'
+        ]);
         $page = new Page;
         $page->slug = $request->slug;
         $page->view = $request->view;
-        $page->save();
+        $success = $page->save();
 
         foreach ($request->fields as $field) {
             $f = new Field;
@@ -45,8 +52,9 @@ class PagesController extends Controller
                 $f->name = $field['name'];
                 $f->value = $field['value'];
             }
-            $f->save();
+            $success = $f->save();
         }
+        return response()->json(['success' => $success]);
     }
 
     public function edit($id) {
@@ -63,11 +71,18 @@ class PagesController extends Controller
 
     public function update(Request $request, $id) {
         $page = Page::find($id);
+        $request->validate([
+            'slug' => 'required|unique:pages,slug,'.$page->id,
+            'view' => 'required',
+            "fields" => 'required|array|min:1',
+            'fields.*.name' => 'required',
+            'fields.*.value' => 'required'
+        ]);
         $page->slug = $request->slug;
         $page->view = $request->view;
-        $page->save();
+        $success = $page->save();
 
-        Field::where('page_id', $page->id)->delete();
+        $success = Field::where('page_id', $page->id)->delete();
         
         foreach ($request->fields as $field) {
             $f = new Field;
@@ -81,8 +96,9 @@ class PagesController extends Controller
                 $f->name = $field['name'];
                 $f->value = $field['value'];
             }
-            $f->save();
+            $success = $f->save();
         }
+        return response()->json(['success' => $success]);
     }
 
     public function destroy($id) {

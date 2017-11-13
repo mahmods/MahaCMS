@@ -5,13 +5,7 @@ use Illuminate\Http\Request;
      'middleware' => 'MahaCMS.auth'
  ], function () {
      Route::get('api/menu', 'PackagesController@all');
+     Route::get('api/nav', 'NavigationController@get');
+     Route::post('api/nav', 'NavigationController@update');
      Route::resource('api/pages', 'PagesController');
-     Route::get('api/nav', function () {
-         return DB::table('nav')->select(['name', 'url'])->get();
-     });
-     Route::post('api/nav', function(Request $request) {
-         $newNav = $request->all();
-         DB::table('nav')->truncate();
-         DB::table('nav')->insert($request->all());
-     });
  });
