@@ -18,12 +18,12 @@ class NavigationController extends Controller
             return response()->json(['message' => 'Navigation must have at least one item.'], 422);
         }
         $request->validate([
-            "*" => 'required|array|min:1',
-            '*.name' => 'required',
-            '*.url' => 'required'
+            "items.*" => 'required|array|min:1|distinct',
+            'items.*.name' => 'distinct|required',
+            'items.*.url' => 'distinct|required'
         ]);
         DB::table('nav')->truncate();
-        if (DB::table('nav')->insert($request->all())) {
+        if (DB::table('nav')->insert($request->items)) {
             return response()->json(['success' => true]);
         }
         return response()->json(['success' => false]);

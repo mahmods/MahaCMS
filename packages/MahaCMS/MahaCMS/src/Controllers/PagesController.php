@@ -4,7 +4,7 @@ namespace MahaCMS\MahaCMS\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use MahaCMS\MahaCMS\Models\Page;
-use MahaCMS\MahaCMS\Models\View;
+use MahaCMS\MahaCMS\Models\Template;
 use MahaCMS\MahaCMS\Models\Field;
 use MahaCMS\Blog\Models\Category;
 
@@ -19,10 +19,10 @@ class PagesController extends Controller
     }
 
     public function create() {
-        $views = View::all();
+        $templates = Template::all();
         $categories = Category::all();
         return response()->json([
-            'views' => $views,
+            'templates' => $templates,
             'categories' => $categories
         ]);
     }
@@ -30,14 +30,12 @@ class PagesController extends Controller
     public function store(Request $request) {
         $request->validate([
             'slug' => 'required|unique:pages',
-            'view' => 'required',
+            'template_id' => 'required',
             "fields" => 'required|array|min:1',
-            'fields.*.name' => 'required',
-            'fields.*.value' => 'required'
         ]);
         $page = new Page;
         $page->slug = $request->slug;
-        $page->view = $request->view;
+        $page->template_id = $request->template_id;
         $success = $page->save();
 
         foreach ($request->fields as $field) {
@@ -59,10 +57,10 @@ class PagesController extends Controller
 
     public function edit($id) {
         $page = Page::find($id);
-        $views = View::all();
+        $templates = Template::all();
         $categories = Category::all();
         return response()->json([
-            'views' => $views,
+            'templates' => $templates,
             'categories' => $categories,
             'form' => $page,
             'fields' => $page->fields
@@ -73,13 +71,11 @@ class PagesController extends Controller
         $page = Page::find($id);
         $request->validate([
             'slug' => 'required|unique:pages,slug,'.$page->id,
-            'view' => 'required',
+            'template_id' => 'required',
             "fields" => 'required|array|min:1',
-            'fields.*.name' => 'required',
-            'fields.*.value' => 'required'
         ]);
         $page->slug = $request->slug;
-        $page->view = $request->view;
+        $page->template_id = $request->template_id;
         $success = $page->save();
 
         $success = Field::where('page_id', $page->id)->delete();
@@ -103,8 +99,11 @@ class PagesController extends Controller
 
     public function destroy($id) {
         $page = Page::find($id);
+        $error = $page->delete();
+        if($error) {
+            return response()->json(['error' => $error ], 403);
+        }
         Field::where('page_id', $page->id)->delete();
-        $page->delete();
         if(Field::where('page_id', $page->id)->delete() && $page->delete()) {
             return response()->json(['success' => true]);
         }

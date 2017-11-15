@@ -17,7 +17,7 @@ class CreateFieldsTable extends Migration
             $table->increments('id');
             $table->integer('page_id');
             $table->string('name')->nallable();
-            $table->string('value')->nallable();
+            $table->longText('value')->nallable();
             $table->string('category')->nallable();
         });
     }

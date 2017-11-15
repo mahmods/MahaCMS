@@ -19,11 +19,6 @@ class CreateSettingsTable extends Migration
             $table->text('setting_value');
             $table->timestamps();
         });
-
-        DB::table('settings')->insert([
-            ['setting_name' => 'appname', 'setting_value' => "MahaCMS"],
-            ['setting_name' => 'appdesc', 'setting_value' => "Just another MahaCMS site"]
-        ]);
     }
 
     /**

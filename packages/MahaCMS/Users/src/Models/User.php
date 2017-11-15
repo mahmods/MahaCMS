@@ -80,4 +80,26 @@ class User extends Authenticatable
     {
         return in_array($this->email, config('mahacms.superadmins'));
     }
+
+    public function deletePosts() {
+        $posts = Post::where('user_id', $this->id)->get();
+        $error = $posts->delete();
+        if ($error)
+        {
+            return $error;
+        } else {
+            return false;
+        }
+    }
+
+    public function delete()
+    {
+        if($this->superAdmin()) {
+            return false;
+            //return 'You can`t delete an admin user.';
+            //return response()->json(['error' => 'Not authorized.'],403);
+        } else {
+            return parent::delete();
+        }
+    }
 }

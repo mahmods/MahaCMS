@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use MahaCMS\Users\Models\User;
 use MahaCMS\Roles\Models\Role;
 use MahaCMS\Profile\Models\Profile;
+use MahaCMS\Blog\Models\Post;
 use Hash;
 use Schema;
 use Auth;
@@ -35,7 +36,8 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create5', User::class);
+        //$this->authorize('create', User::class);
+        $this->authorizeForUser(Auth::guard('api')->user(), 'create', User::class);
         $user = Auth::guard('api')->user();
 
         if ($user->can('create', User::class)) {
@@ -74,9 +76,10 @@ class UserController extends Controller
         if ($userForAuth->can('update', $user)) {
             $request->validate([
                 'name' => 'required|max:60',
-                'email' => 'required|email|unique:users',
+                'email' => 'required|email|unique:users,id,'.$user->id,
                 'password' => 'required|between:6,18|confirmed'
             ]);
+            $request['password'] = bcrypt($request->password);
             $user->update($request->all());
             return response()->json(['success' => true ]);
         }
@@ -87,12 +90,17 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $userForAuth = Auth::guard('api')->user();
-        if ($userForAuth->can('delete', $user)) {
-            $user->delete();
-            return response()->json(['success' => true ]);
+        $this->authorizeForUser($userForAuth, 'delete', $user);
+        $deleted = $user->delete();
+        if(!$deleted) {
+            return response()->json(['error' => 'You can`t delete an admin user.' ], 403);
         }
-        return response()->json(['authorized' => false]);
+        $posts = Post::where('user_id', $user->id);
+        $posts->delete();
+        return response()->json(['success' => true ]);
     }
+
+    
 
     public function manageRoles($id)
     {

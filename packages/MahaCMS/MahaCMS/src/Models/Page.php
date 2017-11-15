@@ -13,4 +13,17 @@ class Page extends Model
         return $this->hasMany('MahaCMS\MahaCMS\Models\Field', 'page_id');
     }
 
+    public function template() {
+        return $this->belongsTo('MahaCMS\MahaCMS\Models\Template');
+    }
+
+    public function delete()
+    {
+        if($this->slug = 'home') {
+            return 'You can`t delete the home page.';
+        } else {
+            return parent::delete();
+        }
+    }
+
 }
