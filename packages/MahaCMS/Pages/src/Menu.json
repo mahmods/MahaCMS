@@ -1,0 +1,15 @@
+{
+    "icon" : "file-text",
+    "items": [
+        {
+            "permission": "pages.access",
+            "text": "Pages list",
+            "link": "/pages"
+        },
+        {
+            "permission": "pages.create",
+            "text": "Create Page",
+            "link": "/pages/create"
+        }
+    ]
+}

@@ -9,10 +9,15 @@ use Auth;
 
 class CategoryController extends Controller
 {
+    private $user;
+
+    public function __construct() {
+        $this->user = Auth::guard('api')->user();
+    }
+
     public function index()
     {
-        $user = Auth::guard('api')->user();
-        $this->authorizeForUser($user, 'access', Category::class);
+        $this->authorizeForUser($this->user, 'access', Category::class);
         return response()->json([
             'items' => Category::select('id', 'name')->get(),
             'columns' => [['id', '#'], ['name', 'Name']]
@@ -27,16 +32,14 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
-        $user = Auth::guard('api')->user();
-        $this->authorizeForUser($user, 'create', Category::class);
+        $this->authorizeForUser($this->user, 'create', Category::class);
         return Category::form();
     }
     
     
     public function store(Request $request)
     {
-        $user = Auth::guard('api')->user();
-        $this->authorizeForUser($user, 'create', Category::class);
+        $this->authorizeForUser($this->user, 'create', Category::class);
         $request->validate(Category::$rules);
         $permission = new Category($request->all());
         $permission->save();
@@ -46,18 +49,16 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $user = Auth::guard('api')->user();
         $category = Category::find($id);
-        $this->authorizeForUser($user, 'update', $category);
+        $this->authorizeForUser($this->user, 'update', $category);
         return Category::form($category);
     }
 
     public function update(Request $request, $id)
     {
-        $user = Auth::guard('api')->user();
         $category = Category::find($id);
         $request->validate(Category::$rules);
-        $this->authorizeForUser($user, 'update', $category);
+        $this->authorizeForUser($this->user, 'update', $category);
         $request->validate([
             'name' => 'required',
             'slug' => 'required|unique:categories,slug,'.$category->id
@@ -68,9 +69,8 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        $user = Auth::guard('api')->user();
         $category = Category::find($id);
-        $this->authorizeForUser($user, 'delete', $category);
+        $this->authorizeForUser($this->user, 'delete', $category);
         $category->delete();
         return response()->json(['success' => true ]);
     }

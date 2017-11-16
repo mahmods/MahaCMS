@@ -12,11 +12,15 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    private $user;
+    
+    public function __construct() {
+        $this->user = Auth::guard('api')->user();
+    }
+
     public function index()
     {
-        return response()->json([
-            'items' => Post::with(['category:id,name', 'user'])->get(),
-            ]);
+        return response()->json(Post::with(['category:id,name', 'user'])->paginate(10));
     }
 
     public function show($id) {
@@ -39,15 +43,13 @@ class PostController extends Controller
 
     public function create()
     {
-        $user = Auth::guard('api')->user();
-        $this->authorizeForUser($user, 'create', Post::class);
+        $this->authorizeForUser($this->user, 'create', Post::class);
         return Post::form();
     }
     
     public function store(Request $request)
     {
-        $user = Auth::guard('api')->user();
-        $this->authorizeForUser($user, 'create', Post::class);
+        $this->authorizeForUser($this->user, 'create', Post::class);
         $request->validate(Post::$rules);
         if(!$request->hasFile('image') && !$request->file('image')->isValid()) {
             return abort(404, 'Image not uploaded');
@@ -63,18 +65,16 @@ class PostController extends Controller
 
     public function edit($id)
     {
-        $user = Auth::guard('api')->user();
         $post = Post::find($id);
-        $this->authorizeForUser($user, 'update', $post);
+        $this->authorizeForUser($this->user, 'update', $post);
         return Post::form($post);
     }
 
     public function update(Request $request, $id)
     {
-        $user = Auth::guard('api')->user();
         $post = Post::find($id);
         $request->validate(Post::$rules);
-        $this->authorizeForUser($user, 'update', $post);
+        $this->authorizeForUser($this->user, 'update', $post);
         if ($request->hasfile('image') && $request->file('image')->isValid()) {
             $filename = $this->getFileName($request->image);
             //return $filename;
@@ -90,9 +90,8 @@ class PostController extends Controller
 
     public function destroy($id)
     {
-        $user = Auth::guard('api')->user();
         $post = Post::find($id);
-        $this->authorizeForUser($user, 'delete', $post);
+        $this->authorizeForUser($this->user, 'delete', $post);
         $post->delete();
         return response()->json(['success' => true ]);
     }

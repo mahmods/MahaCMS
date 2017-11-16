@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['slug', 'view'];
+    protected $fillable = ['slug', 'template_id'];
 
     public function fields() {
         return $this->hasMany('MahaCMS\MahaCMS\Models\Field', 'page_id');
@@ -19,8 +19,8 @@ class Page extends Model
 
     public function delete()
     {
-        if($this->slug = 'home') {
-            return 'You can`t delete the home page.';
+        if($this->slug == 'home') {
+            return false;
         } else {
             return parent::delete();
         }

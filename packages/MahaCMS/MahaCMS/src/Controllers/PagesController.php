@@ -31,8 +31,11 @@ class PagesController extends Controller
         $request->validate([
             'slug' => 'required|unique:pages',
             'template_id' => 'required',
-            "fields" => 'required|array|min:1',
-        ]);
+            "fields" => 'nullable|array|',
+            'fields.*.category' => 'required_without:fields.*.name,fields.*.value',
+            'fields.*.name' => 'required_without:fields.*.category',
+            'fields.*.value' => 'required_without:fields.*.category',
+            ]);
         $page = new Page;
         $page->slug = $request->slug;
         $page->template_id = $request->template_id;
@@ -99,12 +102,12 @@ class PagesController extends Controller
 
     public function destroy($id) {
         $page = Page::find($id);
-        $error = $page->delete();
-        if($error) {
-            return response()->json(['error' => $error ], 403);
+        $deleted = $page->delete();
+        if(!$deleted) {
+            return response()->json(['error' => 'You can`t delete the home page.' ], 403);
         }
-        Field::where('page_id', $page->id)->delete();
-        if(Field::where('page_id', $page->id)->delete() && $page->delete()) {
+        //Field::where('page_id', $page->id)->delete();
+        if(Field::where('page_id', $page->id)->delete() && $deleted) {
             return response()->json(['success' => true]);
         }
     }

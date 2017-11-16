@@ -2,6 +2,7 @@
     "icon": "cog",
     "items": [
         {
+            "permission": "settings.access",
             "text": "Settings",
             "link": "/settings"
         }
