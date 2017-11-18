@@ -33,9 +33,18 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $request->validate([
+            'name' => 'required|max:60',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|between:6,18|confirmed'
+        ]);
         $user = new User($request->all());
         $user->password = bcrypt($request->password);
         $user->save();
+
+        $profile = new Profile(['user_id' => $newUser->id]);
+        $profile->first_name = $newUser->name;
+        $profile->save();
 
         return response()->json(['registered' => true]);
     }
